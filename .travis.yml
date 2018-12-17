@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+install:
+  - composer selfupdate
+  - composer install
+
+script:
+  - ./vendor/bin/phpcs src
+  - ./vendor/bin/psalm
+  - ./vendor/bin/phpunit --colors --coverage-text
+
+after_success:
+  - travis_retry php vendor/bin/coveralls
