@@ -15,7 +15,7 @@ class Insert extends Query
     final public function getQuery(): string
     {
         if (is_null($this->parameter)) {
-            throw new RuntimeException("No fields to update defined");
+            throw new RuntimeException('No fields to update defined');
         }
 
         $parts = ['INSERT INTO'];

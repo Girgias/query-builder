@@ -14,7 +14,7 @@ class Update extends Query
     public function getQuery(): string
     {
         if (is_null($this->parameter)) {
-            throw new RuntimeException("No fields to update defined");
+            throw new RuntimeException('No fields to update defined');
         }
         if (is_null($this->where)) {
             throw new DangerousSqlQueryWarning('No WHERE clause in UPDATE query');

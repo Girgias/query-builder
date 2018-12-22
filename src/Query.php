@@ -19,11 +19,11 @@ use TypeError;
  */
 abstract class Query
 {
-    public const SORT_ASC = "ASC";
-    public const SORT_DESC = "DESC";
+    public const SORT_ASC = 'ASC';
+    public const SORT_DESC = 'DESC';
 
-    protected const SQL_NAME_PATTERN = "#^[a-z_]+(.[a-z0-9_])*$#";
-    protected const SQL_DATE_FORMAT = "Y-m-d H:i:s";
+    protected const SQL_NAME_PATTERN = '#^[a-z_]+(.[a-z0-9_])*$#';
+    protected const SQL_DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @var string
@@ -316,7 +316,7 @@ abstract class Query
     final private function buildBetweenSqlString($start, $end): string
     {
         if (gettype($start) !== gettype($end)) {
-            throw new TypeError("Start and End values provided to WHERE NOT BETWEEN are of different types");
+            throw new TypeError('Start and End values provided to WHERE NOT BETWEEN are of different types');
         }
 
         if (!is_int($start) && !is_float($start) && !($start instanceof DateTimeInterface) &&
