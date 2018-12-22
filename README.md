@@ -17,9 +17,9 @@ because it uses the ANSI standardized syntax.
 ### Examples
 A basic select query:
 ```php
-$query = (new \Girgias\QueryBuilder\Query('select', 'demo')
+$query = (new \Girgias\QueryBuilder\Select("demo"))
     ->limit(10, 20)
-    ->order('published_date')
+    ->order("published_date")
     ->getQuery();
 ```
 Will output:
@@ -29,15 +29,15 @@ SELECT * FROM demo ORDER BY published_date ASC LIMIT 10 OFFSET 20
 
 A more complex select query:
 ```php
-$start = new \DateTime('01/01/2016');
-$end   = new \DateTime('01/01/2017');
-$query = (new \Girgias\QueryBuilder\Query('select', 'demo'))
-        ->select('title', 'slug')
-        ->selectAs('name_author_post', 'author')
-        ->whereBetween('date_published', $start, $end)
-        ->order('date_published', 'DESC')
-        ->limit(25)
-        ->getQuery();
+$start = new \DateTime("01/01/2016");
+$end   = new \DateTime("01/01/2017");
+$query = (new \Girgias\QueryBuilder\Select("demo"))
+    ->select("title", "slug")
+    ->selectAs("name_author_post", "author")
+    ->whereBetween("date_published", $start, $end)
+    ->order("date_published", "DESC")
+    ->limit(25)
+    ->getQuery();
 ```
 
 Will output:
@@ -47,10 +47,10 @@ SELECT title, slug, name_author_post AS author FROM demo WHERE date_published BE
 
 An example with the ``whereOr`` method:
 ```php
-$query = (new \Girgias\QueryBuilder\Query('select', 'demo'))
-        ->where('author', 'author')
-        ->whereOr('editor', 'editor')
-        ->getQuery();
+$query = (new \Girgias\QueryBuilder\Select("demo"))
+    ->where("author", "=", "author")
+    ->whereOr("editor", "=", "editor")
+    ->getQuery();
 ```
 
 Will output:
@@ -60,11 +60,11 @@ SELECT * FROM demo WHERE (author = :author OR editor = :editor)
 
 Update example:
 ```php
-$query = (new \Girgias\QueryBuilder\Query(Query::QUERY_UPDATE, 'posts'))
-    ->where('id', SqlOperators::EQUAL, 'id')
-    ->bindField('title', 'title')
-    ->bindField('content', 'content')
-    ->bindField('date_last_edited', 'now_date')
+$query = (new \Girgias\QueryBuilder\Update("posts"))
+    ->where("id", SqlOperators::EQUAL, "id")
+    ->bindField("title", "title")
+    ->bindField("content", "content")
+    ->bindField("date_last_edited", "now_date")
     ->getQuery();
 ```
 Will output:
