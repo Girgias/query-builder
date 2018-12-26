@@ -1,4 +1,5 @@
 # SQL Query Builder
+[![Build Status](https://travis-ci.org/Girgias/query-builder.svg?branch=master)](https://travis-ci.org/Girgias/query-builder)
 
 A fluent SQL Query Builder which **ONLY** builds a valid SQL query with the SQL 
 clauses it has been asked to provide.
@@ -86,26 +87,30 @@ There are some features that are still waiting to be implementing
 ## Contributing
 
 If you found an invalid SQL name which **DOESN'T** throw a Runtime exception
-or a valid SQL name which does
-please add a test case into the ``tests/CheckSqlNamesTest.php`` file.
+or a valid SQL name which does please add a test case into the 
+``tests/CheckSqlNamesTest.php`` file.
 
 If you found an example where this library returns an invalid SQL query
 please add (or fix) a test case in the ``tests/QueryTest`` file.
+
 If a RunTime exception should be thrown please add a test in the 
 ``tests/QueryThrowExceptionsTest.php`` file.
 
 If you'd like to contribute, please fork the repository and use a feature
 branch. Pull requests are warmly welcome.
 
-Note: When contributing you should make sure that Psalm doesn't return an error
+### Notes
+When contributing you should make sure that Psalm runs without error
 and all unit tests pass.
+Moreover if you add functionality please add corresponding unit tests to cover
+at least 90% of your code and that theses tests make sure of edge cases if they exist.
 
 ## Links
 
 - Repository: https://github.com/girgias/query-builder/
 - Issue tracker: https://github.com/girgias/query-builder/issues
   - In case of sensitive bugs like security vulnerabilities, please contact
-    george.banyard@gmail.com directly instead of using issue tracker.
+    george.banyard@gmail.com directly instead of using the issue tracker.
 
 
 ## Licensing
