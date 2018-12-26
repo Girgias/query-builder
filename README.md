@@ -14,6 +14,10 @@ composer require girgias/query-builder
 This Query Builder can build a variety of SQL queries which are database agnostic
 because it uses the ANSI standardized syntax.
 
+Every sort of query has its own class which extends from the base Query class,
+They all have the same constructor signature which requires the table name 
+on which to execute the query.
+
 ### Examples
 A basic select query:
 ```php
@@ -78,7 +82,6 @@ There are some features that are still waiting to be implementing
 
 * WHERE IN and WHERE NOT IN clauses
 * Table joins
-* Warns when using a LIMIT clause without an ORDER clause
 
 ## Contributing
 
