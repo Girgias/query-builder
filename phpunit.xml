@@ -15,7 +15,7 @@
         verbose="false"
 >
     <testsuites>
-        <testsuite name="tests">
+        <testsuite name="unit">
             <directory phpVersion="7.3" >tests</directory>
         </testsuite>
     </testsuites>
