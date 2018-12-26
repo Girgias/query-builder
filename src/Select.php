@@ -2,6 +2,7 @@
 
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlFieldNameException;
@@ -264,6 +265,13 @@ class Select extends Query
      */
     final public function getQuery(): string
     {
+        if (!is_null($this->limit) && is_null($this->order)) {
+            throw new DangerousSqlQueryWarning(
+                'When using LIMIT, it is important to use an ORDER BY clause that constrains the result rows ' .
+                'into a unique order. Otherwise you will get an unpredictable subset of the query\'s rows.'
+            );
+        }
+
         if (is_null($this->select)) {
             $this->select[] = '*';
         }

@@ -328,6 +328,13 @@ class QueryThrowExceptionsTest extends TestCase
     }
 
     /** Dangerous queries */
+    public function test__Throw__Exception__On__Select__Limit__Without__Order__Clause()
+    {
+        $query = (new Select('test'))->limit(5);
+        $this->expectException(DangerousSqlQueryWarning::class);
+        $query->getQuery();
+    }
+
     public function test__Throw__Exception__On__Dangerous__Delete__Query()
     {
         $query = (new Delete('test'));
