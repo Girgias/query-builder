@@ -1,6 +1,6 @@
 .idea
 composer.lock
-coverage-reports
+build
 vendor
 
 
