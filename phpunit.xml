@@ -16,7 +16,7 @@
 >
     <testsuites>
         <testsuite name="unit">
-            <directory phpVersion="7.3" >tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
