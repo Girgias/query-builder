@@ -5,7 +5,6 @@ namespace Girgias\Tests\QueryBuilder;
 use Girgias\QueryBuilder\AggregateFunctions;
 use Girgias\QueryBuilder\Delete;
 use Girgias\QueryBuilder\Insert;
-use Girgias\QueryBuilder\Query;
 use Girgias\QueryBuilder\Select;
 use Girgias\QueryBuilder\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
@@ -44,14 +43,14 @@ class QueryThrowExceptionsTest extends TestCase
     public function test__Throw__Exception__On__Invalid__Select__Column()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->select(self::INVALID_NAME);
     }
 
     public function test__Throw__Exception__On__Invalid__Select__As__Column()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->selectAs(self::INVALID_NAME, 'alias');
     }
 
@@ -65,7 +64,7 @@ class QueryThrowExceptionsTest extends TestCase
     public function test__Throw__Exception__On__Invalid__Column__when__Select__Aggregate()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->selectAggregate(self::INVALID_NAME, AggregateFunctions::COUNT, 'alias');
     }
 
@@ -86,14 +85,14 @@ class QueryThrowExceptionsTest extends TestCase
     public function test__Throw__Exception__On__Invalid__Distinct__Column()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinct(self::INVALID_NAME);
     }
 
     public function test__Throw__Exception__On__Invalid__Distinct__As__Column()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinctAs(self::INVALID_NAME, 'alias');
     }
 
@@ -107,7 +106,7 @@ class QueryThrowExceptionsTest extends TestCase
     public function test__Throw__Exception__On__Invalid__Column__when__Distinct__Aggregate()
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinctAggregate(self::INVALID_NAME, AggregateFunctions::COUNT, 'alias');
     }
 

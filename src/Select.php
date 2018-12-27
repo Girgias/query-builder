@@ -5,7 +5,6 @@ namespace Girgias\QueryBuilder;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
-use Girgias\QueryBuilder\Exceptions\InvalidSqlFieldNameException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlFunctionException;
 use InvalidArgumentException;
 use OutOfRangeException;
@@ -63,55 +62,55 @@ class Select extends Query
     }
 
     /**
-     * SELECT fields
+     * SELECT columns
      *
-     * @param string ...$fields
+     * @param string ...$columns
      * @return Select
      */
-    final public function select(string ...$fields): self
+    final public function select(string ...$columns): self
     {
-        foreach ($fields as $field) {
-            if (!$this->isValidSqlName($field)) {
-                throw new InvalidSqlFieldNameException($field);
+        foreach ($columns as $column) {
+            if (!$this->isValidSqlName($column)) {
+                throw new InvalidSqlColumnNameException('SELECT', $column);
             }
-            $this->select[] = $field;
+            $this->select[] = $column;
         }
         return $this;
     }
 
     /**
-     * SELECT a field with an alias
+     * SELECT a column with an alias
      *
-     * @param string $field
+     * @param string $column
      * @param string $alias
      * @return Select
      */
-    final public function selectAs(string $field, string $alias): self
+    final public function selectAs(string $column, string $alias): self
     {
-        if (!$this->isValidSqlName($field)) {
-            throw new InvalidSqlFieldNameException($field);
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('SELECT', $column);
         }
 
         if (!$this->isValidSqlName($alias)) {
-            throw new InvalidSqlAliasNameException($field, $alias);
+            throw new InvalidSqlAliasNameException($column, $alias);
         }
 
-        $this->select[] = $field . ' AS ' . $alias;
+        $this->select[] = $column . ' AS ' . $alias;
         return $this;
     }
 
     /**
-     * SELECT an aggregated field
+     * SELECT an aggregated column
      *
-     * @param string $field
+     * @param string $column
      * @param string $aggregateFunction
      * @param string $alias
      * @return Select
      */
-    final public function selectAggregate(string $field, string $aggregateFunction, string $alias): self
+    final public function selectAggregate(string $column, string $aggregateFunction, string $alias): self
     {
-        if (!$this->isValidSqlName($field)) {
-            throw new InvalidSqlFieldNameException($field);
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('SELECT', $column);
         }
 
         if (!AggregateFunctions::isValidValue($aggregateFunction)) {
@@ -119,10 +118,10 @@ class Select extends Query
         }
 
         if (!$this->isValidSqlName($alias)) {
-            throw new InvalidSqlAliasNameException($field, $alias);
+            throw new InvalidSqlAliasNameException($column, $alias);
         }
 
-        $this->select[] = $aggregateFunction . '(' . $field . ') AS ' . $alias;
+        $this->select[] = $aggregateFunction . '(' . $column . ') AS ' . $alias;
         return $this;
     }
 
@@ -138,42 +137,42 @@ class Select extends Query
 
 
     /**
-     * SELECT DISTINCT fields
+     * SELECT DISTINCT columns
      *
-     * @param string ...$fields
+     * @param string ...$columns
      * @return Select
      */
-    final public function distinct(string ...$fields): self
+    final public function distinct(string ...$columns): self
     {
         $this->distinct = true;
-        return $this->select(...$fields);
+        return $this->select(...$columns);
     }
 
     /**
-     * SELECT DISTINCT a field with an alias
+     * SELECT DISTINCT a column with an alias
      *
-     * @param string $field
+     * @param string $column
      * @param string $alias
      * @return Select
      */
-    final public function distinctAs(string $field, string $alias): self
+    final public function distinctAs(string $column, string $alias): self
     {
         $this->distinct = true;
-        return $this->selectAs($field, $alias);
+        return $this->selectAs($column, $alias);
     }
 
     /**
-     * SELECT an aggregated DISTINCT field
+     * SELECT an aggregated DISTINCT column
      *
-     * @param string $field
+     * @param string $column
      * @param string $aggregateFunction
      * @param string $alias
      * @return Select
      */
-    final public function distinctAggregate(string $field, string $aggregateFunction, string $alias): self
+    final public function distinctAggregate(string $column, string $aggregateFunction, string $alias): self
     {
-        if (!$this->isValidSqlName($field)) {
-            throw new InvalidSqlFieldNameException($field);
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('SELECT', $column);
         }
 
         if (!AggregateFunctions::isValidValue($aggregateFunction)) {
@@ -181,10 +180,10 @@ class Select extends Query
         }
 
         if (!$this->isValidSqlName($alias)) {
-            throw new InvalidSqlAliasNameException($field, $alias);
+            throw new InvalidSqlAliasNameException($column, $alias);
         }
 
-        $this->select[] = $aggregateFunction . '(DISTINCT ' . $field . ') AS ' . $alias;
+        $this->select[] = $aggregateFunction . '(DISTINCT ' . $column . ') AS ' . $alias;
         return $this;
     }
 
