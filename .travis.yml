@@ -22,7 +22,7 @@ install:
 script:
   - ./vendor/bin/phpcs src
   - ./vendor/bin/psalm
-  - ./vendor/bin/phpunit --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpunit --coverage-text
 
 after_script:
   - if [ $(phpenv version-name) >= "7.1" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
