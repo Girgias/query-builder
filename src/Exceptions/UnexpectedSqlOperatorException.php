@@ -21,7 +21,7 @@ class UnexpectedSqlOperatorException extends UnexpectedValueException
     {
         $message = "Comparison operator `{$operator}` provided for {$clause} clause is invalid or unsupported.";
         if ($operator === "!=") {
-            $message .= "Did you mean `<>` (ANSI 'not equal to' operator) ?";
+            $message .= "\nDid you mean `<>` (ANSI 'not equal to' operator) ?";
         }
         parent::__construct($message, $code, $previous);
     }

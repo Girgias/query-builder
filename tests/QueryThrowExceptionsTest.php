@@ -173,6 +173,17 @@ class QueryThrowExceptionsTest extends TestCase
         $this->expectException(UnexpectedSqlOperatorException::class);
         $query->where('test', 'not an operator', 'random');
     }
+
+    public function test__Throw__Exception__With__Help__Message__When__Non__Obvious__NotEqualTo__Operator__Used()
+    {
+        $query = (new Select('test'));
+        $this->expectException(UnexpectedSqlOperatorException::class);
+        $this->expectExceptionMessage(
+            'Comparison operator `!=` provided for WHERE clause is invalid or unsupported.
+Did you mean `<>` (ANSI \'not equal to\' operator) ?'
+        );
+        $query->where('test', '!=', 'random');
+    }
     public function test__Throw__Exception__On__Invalid__Where__Or__Column()
     {
         $query = (new Select('test'));
