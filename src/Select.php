@@ -6,8 +6,10 @@ use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlFunctionException;
+use Girgias\QueryBuilder\Exceptions\UnexpectedSqlOperatorException;
 use InvalidArgumentException;
 use OutOfRangeException;
+use RuntimeException;
 
 class Select extends Query
 {
@@ -30,6 +32,11 @@ class Select extends Query
      * @var ?array<int, string>
      */
     private $group;
+
+    /**
+     * @var ?array<int, string>
+     */
+    protected $having;
 
     /**
      * @var ?array<int, string>
@@ -200,6 +207,73 @@ class Select extends Query
         }
 
         $this->group = [$column];
+        return $this;
+    }
+
+    /**
+     * Add a HAVING clause to the Query
+     *
+     * @param string $column
+     * @param string $aggregateFunction
+     * @param string $operator
+     * @param int $conditionValue
+     * @return Select
+      */
+    final public function having(string $column, string $aggregateFunction, string $operator, int $conditionValue): self
+    {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('HAVING', $column);
+        }
+
+        if (!AggregateFunctions::isValidValue($aggregateFunction)) {
+            throw new UnexpectedSqlFunctionException('HAVING', $aggregateFunction);
+        }
+
+        if (!SqlOperators::isValidValue($operator)) {
+            throw new UnexpectedSqlOperatorException('HAVING', $operator);
+        }
+
+        $this->having[] = $aggregateFunction . '(' . $column . ') ' . $operator . ' ' . $conditionValue;
+
+        return $this;
+    }
+
+    /**
+     * Add a HAVING clause to the Query which should be ORed with the previous use of a HAVING clause
+     *
+     * @param string $column
+     * @param string $aggregateFunction
+     * @param string $operator
+     * @param int $conditionValue
+     * @return Select
+     */
+    final public function havingOr(
+        string $column,
+        string $aggregateFunction,
+        string $operator,
+        int $conditionValue
+    ): self {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('HAVING', $column);
+        }
+
+        if (!AggregateFunctions::isValidValue($aggregateFunction)) {
+            throw new UnexpectedSqlFunctionException('HAVING', $aggregateFunction);
+        }
+
+        if (!SqlOperators::isValidValue($operator)) {
+            throw new UnexpectedSqlOperatorException('HAVING', $operator);
+        }
+
+        if (is_null($this->having)) {
+            throw new RuntimeException(
+                'Need to define at least another HAVING clause before utilizing havingOr method'
+            );
+        }
+
+        $this->having[] = '(' . array_pop($this->having) . ' OR ' .
+            $aggregateFunction . '(' . $column . ') ' . $operator . ' ' . $conditionValue . ')';
+
         return $this;
     }
 
