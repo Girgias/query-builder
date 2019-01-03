@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Girgias\QueryBuilder;
 
 use DateTimeInterface;
+use Girgias\QueryBuilder\Enums\SqlOperators;
+use Girgias\QueryBuilder\Enums\SqlReservedWords;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlFieldNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlTableNameException;

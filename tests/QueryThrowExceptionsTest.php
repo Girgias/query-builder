@@ -2,11 +2,11 @@
 
 namespace Girgias\Tests\QueryBuilder;
 
-use Girgias\QueryBuilder\AggregateFunctions;
+use Girgias\QueryBuilder\Enums\AggregateFunctions;
+use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Delete;
 use Girgias\QueryBuilder\Insert;
 use Girgias\QueryBuilder\Select;
-use Girgias\QueryBuilder\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;

@@ -2,6 +2,8 @@
 
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Enums\AggregateFunctions;
+use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;

@@ -5,5 +5,5 @@ vendor
 
 
 temp.php
-src/DBMS.php
-src/JoinClauseTypes.php
+src/Enums/DBMS.php
+src/Enums/JoinClauseTypes.php

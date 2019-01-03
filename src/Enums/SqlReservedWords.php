@@ -1,5 +1,5 @@
 <?php
-namespace Girgias\QueryBuilder;
+namespace Girgias\QueryBuilder\Enums;
 
 class SqlReservedWords
 {

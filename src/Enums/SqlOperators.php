@@ -1,6 +1,6 @@
 <?php
 
-namespace Girgias\QueryBuilder;
+namespace Girgias\QueryBuilder\Enums;
 
 /**
  * Class SqlOperators

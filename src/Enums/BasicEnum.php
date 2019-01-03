@@ -4,7 +4,7 @@
  * Edited and updated by George Peter Banyard <george.banyard@gmail.com>
  */
 
-namespace Girgias\QueryBuilder;
+namespace Girgias\QueryBuilder\Enums;
 
 use DomainException;
 use ReflectionClass;
