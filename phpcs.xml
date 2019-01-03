@@ -13,7 +13,6 @@
     <rule ref="Squiz.Arrays.ArrayBracketSpacing" />
     <rule ref="Squiz.Commenting.DocCommentAlignment" />
     <rule ref="Squiz.Commenting.EmptyCatchComment" />
-    <rule ref="Squiz.Commenting.InlineComment" />
     <rule ref="Squiz.Commenting.PostStatementComment" />
     <rule ref="Squiz.Formatting.OperatorBracket" />
     <rule ref="Squiz.PHP.DisallowInlineIf" />

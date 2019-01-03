@@ -13,7 +13,6 @@ class InvalidSqlTableNameException extends InvalidArgumentException
 {
     /**
      * InvalidSqlTableNameException constructor.
-     * @param string $clause
      * @param string $table
      * @param int $code
      * @param Throwable|null $previous

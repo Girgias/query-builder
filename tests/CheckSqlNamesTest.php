@@ -1,7 +1,7 @@
 <?php
 namespace Girgias\Tests\QueryBuilder;
 
-use Girgias\QueryBuilder\Query;
+use Girgias\QueryBuilder\Select;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
@@ -9,7 +9,7 @@ class CheckSqlNamesTest extends TestCase
 {
     public function testIsValidSqlName()
     {
-        $query = (new Query(Query::QUERY_SELECT, 'demo'));
+        $query = (new Select('demo'));
         $method = new ReflectionMethod($query, 'isValidSqlName');
         $method->setAccessible(true);
 
