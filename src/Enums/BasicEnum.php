@@ -6,9 +6,7 @@
 
 namespace Girgias\QueryBuilder\Enums;
 
-use DomainException;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Class BasicEnum
@@ -35,6 +33,7 @@ abstract class BasicEnum
     {
     }
 
+    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * @return array<string, mixed>
      */
@@ -44,17 +43,13 @@ abstract class BasicEnum
             self::$constCacheArray = [];
         }
 
-        $calledClass = get_called_class();
-        if (array_key_exists($calledClass, self::$constCacheArray) === false) {
-            try {
-                $reflect = new ReflectionClass($calledClass);
-                self::$constCacheArray[$calledClass] = $reflect->getConstants();
-            } catch (ReflectionException $exception) {
-                throw new DomainException('Unable to retrieve Enum constants', 0, $exception);
-            }
+        if (array_key_exists(static::class, self::$constCacheArray) === false) {
+            /** @noinspection PhpUnhandledExceptionInspection*/
+            $reflect = new ReflectionClass(static::class);
+            self::$constCacheArray[static::class] = $reflect->getConstants();
         }
 
-        return self::$constCacheArray[$calledClass];
+        return self::$constCacheArray[static::class];
     }
 
     /**
