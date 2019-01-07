@@ -93,10 +93,13 @@ or a valid SQL name which does please add a test case into the
 ``tests/CheckSqlNamesTest.php`` file.
 
 If you found an example where this library returns an invalid SQL query
-please add (or fix) a test case in the ``tests/QueryTest`` file.
+please add (or fix) a test case in the relevant Query test case or if it's
+a general error please use the ``tests/QueryTest`` file.
 
 If a RunTime exception should be thrown please add a test in the 
-``tests/QueryThrowExceptionsTest.php`` file.
+``tests/QueryThrowExceptionsTest.php`` file if it's for general Exceptions
+or if it is specific to the Select Query please add a test in the
+``tests/SelectThrowExceptionsTest.php`` file.
 
 If you'd like to contribute, please fork the repository and use a feature
 branch. Pull requests are warmly welcome.
