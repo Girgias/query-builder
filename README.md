@@ -1,5 +1,7 @@
 # SQL Query Builder
 [![Build Status](https://travis-ci.org/Girgias/query-builder.svg?branch=master)](https://travis-ci.org/Girgias/query-builder)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e804486b68df4080cead/maintainability)](https://codeclimate.com/github/Girgias/query-builder/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e804486b68df4080cead/test_coverage)](https://codeclimate.com/github/Girgias/query-builder/test_coverage)
 
 A fluent SQL Query Builder which **ONLY** builds a valid SQL query with the SQL 
 clauses it has been asked to provide.
