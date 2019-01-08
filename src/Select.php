@@ -18,6 +18,9 @@ class Select extends Query
 {
     use Where;
 
+    public const SORT_ASC = 'ASC';
+    public const SORT_DESC = 'DESC';
+
     /**
      * @var ?string
      */
