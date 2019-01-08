@@ -1,7 +1,6 @@
 <?php
 
-namespace Girgias\QueryBuilder\Clauses;
-
+namespace Girgias\QueryBuilder\Traits;
 
 use DateTimeInterface;
 use Girgias\QueryBuilder\Enums\SqlOperators;

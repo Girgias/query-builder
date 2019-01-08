@@ -2,7 +2,7 @@
 
 namespace Girgias\QueryBuilder;
 
-use Girgias\QueryBuilder\Clauses\Where;
+use Girgias\QueryBuilder\Traits\Where;
 use Girgias\QueryBuilder\Enums\AggregateFunctions;
 use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;

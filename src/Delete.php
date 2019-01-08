@@ -1,7 +1,7 @@
 <?php
 namespace Girgias\QueryBuilder;
 
-use Girgias\QueryBuilder\Clauses\Where;
+use Girgias\QueryBuilder\Traits\Where;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 
 class Delete extends Query
