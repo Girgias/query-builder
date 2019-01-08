@@ -24,7 +24,7 @@ abstract class Query
     /**
      * @var ?array<string, string>
      */
-    protected $parameter;
+    protected $parameters;
 
     /**
      * Query constructor.
@@ -53,7 +53,7 @@ abstract class Query
             throw new InvalidSqlFieldNameException($field);
         }
 
-        $this->parameter[$field] = $parameter;
+        $this->parameters[$field] = $parameter;
 
         return $this;
     }

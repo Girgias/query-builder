@@ -14,20 +14,20 @@ class Insert extends Query
      */
     final public function getQuery(): string
     {
-        if (is_null($this->parameter)) {
+        if (is_null($this->parameters)) {
             throw new RuntimeException('No fields to update defined');
         }
 
         $parts = ['INSERT INTO'];
         $parts[] = $this->table;
 
-        $columns = array_keys($this->parameter);
+        $columns = array_keys($this->parameters);
         $parts[] = '(' . join(', ', $columns) . ')';
 
         $parts[] = 'VALUES';
 
         $parameters = [];
-        foreach ($this->parameter as $parameter) {
+        foreach ($this->parameters as $parameter) {
             $parameters[] = ':' . $parameter;
         }
         $parts[] = '(' . join(', ', $parameters) . ')';

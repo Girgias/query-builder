@@ -16,7 +16,7 @@ class Update extends Query
      */
     public function getQuery(): string
     {
-        if (is_null($this->parameter)) {
+        if (is_null($this->parameters)) {
             throw new RuntimeException('No fields to update defined');
         }
         if (is_null($this->where)) {
@@ -29,7 +29,7 @@ class Update extends Query
 
         $columns = [];
 
-        foreach ($this->parameter as $column => $binding) {
+        foreach ($this->parameters as $column => $binding) {
             $columns[] = $column . ' = :' . $binding;
         }
         $parts[] = join(', ', $columns);
