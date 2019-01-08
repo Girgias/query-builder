@@ -22,11 +22,6 @@ abstract class Query
     protected $table;
 
     /**
-     * @var ?array<string, string>
-     */
-    protected $parameters;
-
-    /**
      * Query constructor.
      *
      * @param string $table
@@ -38,24 +33,6 @@ abstract class Query
         }
 
         $this->table = $table;
-    }
-
-    /**
-     * Binds a field to a parameter
-     *
-     * @param string $field
-     * @param string $parameter
-     * @return Query
-     */
-    final public function bindField(string $field, string $parameter): self
-    {
-        if (!$this->isValidSqlName($field)) {
-            throw new InvalidSqlFieldNameException($field);
-        }
-
-        $this->parameters[$field] = $parameter;
-
-        return $this;
     }
 
     /**

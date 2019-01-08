@@ -1,13 +1,14 @@
 <?php
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Traits\BindField;
 use Girgias\QueryBuilder\Traits\Where;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use RuntimeException;
 
 class Update extends Query
 {
-    use Where;
+    use Where, BindField;
 
     /**
      * Return built Query
