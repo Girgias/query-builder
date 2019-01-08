@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Girgias\QueryBuilder;
 
 use Girgias\QueryBuilder\Enums\SqlReservedWords;
-use Girgias\QueryBuilder\Exceptions\InvalidSqlFieldNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlTableNameException;
 
 /**
