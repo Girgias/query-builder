@@ -1,10 +1,12 @@
 <?php
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Clauses\Where;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 
 class Delete extends Query
 {
+    use Where;
 
     /**
      * Return built Query
