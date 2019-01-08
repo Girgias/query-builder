@@ -21,10 +21,7 @@ class Insert extends Query
         $parts = ['INSERT INTO'];
         $parts[] = $this->table;
 
-        $columns = [];
-        foreach (array_keys($this->parameter) as $keys) {
-            $columns[] = $keys;
-        }
+        $columns = array_keys($this->parameter);
         $parts[] = '(' . join(', ', $columns) . ')';
 
         $parts[] = 'VALUES';
