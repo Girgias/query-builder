@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Girgias\Tests\QueryBuilder;
 
 use Girgias\QueryBuilder\Select;

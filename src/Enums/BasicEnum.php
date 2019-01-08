@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Source : http://stackoverflow.com/questions/254514/php-and-enumerations
  * Edited and updated by George Peter Banyard <george.banyard@gmail.com>
