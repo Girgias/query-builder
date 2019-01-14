@@ -29,11 +29,11 @@ class Update extends Query
         foreach ($this->parameter as $column => $binding) {
             $columns[] = $column . ' = :' . $binding;
         }
-        $parts[] = join(', ', $columns);
+        $parts[] = implode(', ', $columns);
 
         $parts[] = 'WHERE';
-        $parts[] = join(' AND ', $this->where);
+        $parts[] = implode(' AND ', $this->where);
 
-        return join(' ', $parts);
+        return implode(' ', $parts);
     }
 }

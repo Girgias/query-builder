@@ -354,7 +354,7 @@ class Select extends Query
         if ($this->distinct) {
             $parts[] = 'DISTINCT';
         }
-        $parts[] = join(', ', $this->select);
+        $parts[] = implode(', ', $this->select);
 
         $parts[] = 'FROM';
         $parts[] = $this->table;
@@ -366,22 +366,22 @@ class Select extends Query
 
         if (!is_null($this->where)) {
             $parts[] = 'WHERE';
-            $parts[] = join(' AND ', $this->where);
+            $parts[] = implode(' AND ', $this->where);
         }
 
         if (!is_null($this->group)) {
             $parts[] = 'GROUP BY';
-            $parts[] = join(' ', $this->group);
+            $parts[] = implode(' ', $this->group);
         }
 
         if (!is_null($this->having)) {
             $parts[] = 'HAVING';
-            $parts[] = join(' AND ', $this->having);
+            $parts[] = implode(' AND ', $this->having);
         }
 
         if (!is_null($this->order)) {
             $parts[] = 'ORDER BY';
-            $parts[] = join(', ', $this->order);
+            $parts[] = implode(', ', $this->order);
 
             if (!is_null($this->limit)) {
                 $parts[] = 'LIMIT';
@@ -394,6 +394,6 @@ class Select extends Query
             }
         }
 
-        return join(' ', $parts);
+        return implode(' ', $parts);
     }
 }

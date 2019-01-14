@@ -21,8 +21,8 @@ class Delete extends Query
         $parts[] = $this->table;
 
         $parts[] = 'WHERE';
-        $parts[] = join(' AND ', $this->where);
+        $parts[] = implode(' AND ', $this->where);
 
-        return join(' ', $parts);
+        return implode(' ', $parts);
     }
 }

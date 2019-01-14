@@ -25,7 +25,7 @@ class Insert extends Query
         foreach (array_keys($this->parameter) as $keys) {
             $columns[] = $keys;
         }
-        $parts[] = '(' . join(', ', $columns) . ')';
+        $parts[] = '(' . implode(', ', $columns) . ')';
 
         $parts[] = 'VALUES';
 
@@ -33,8 +33,8 @@ class Insert extends Query
         foreach ($this->parameter as $parameter) {
             $parameters[] = ':' . $parameter;
         }
-        $parts[] = '(' . join(', ', $parameters) . ')';
+        $parts[] = '(' . implode(', ', $parameters) . ')';
 
-        return join(' ', $parts);
+        return implode(' ', $parts);
     }
 }
