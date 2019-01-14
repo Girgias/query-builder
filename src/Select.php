@@ -382,15 +382,15 @@ class Select extends Query
         if (!is_null($this->order)) {
             $parts[] = 'ORDER BY';
             $parts[] = join(', ', $this->order);
-        }
 
-        if (!is_null($this->limit)) {
-            $parts[] = 'LIMIT';
-            $parts[] = $this->limit;
+            if (!is_null($this->limit)) {
+                $parts[] = 'LIMIT';
+                $parts[] = $this->limit;
 
-            if (!is_null($this->offset)) {
-                $parts[] = 'OFFSET';
-                $parts[] = $this->offset;
+                if (!is_null($this->offset)) {
+                    $parts[] = 'OFFSET';
+                    $parts[] = $this->offset;
+                }
             }
         }
 
