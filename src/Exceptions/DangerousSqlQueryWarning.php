@@ -11,5 +11,4 @@ use RuntimeException;
  */
 class DangerousSqlQueryWarning extends RuntimeException
 {
-
 }
