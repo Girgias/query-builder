@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php" : "^7.1"
+        "php" : "^7.1",
+        "girgias/php-enums": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",

@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Girgias\QueryBuilder\Enums;
 
+use Girgias\Enums\Base;
+
 /**
  * Class SqlOperators
  * @package Girgias\QueryBuilder
  */
-abstract class SqlOperators extends BasicEnum
+abstract class SqlOperators extends Base
 {
     public const DIFFERENT = '<>';
     public const EQUAL = '=';
