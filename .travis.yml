@@ -20,7 +20,6 @@ install:
   - composer install
 
 script:
-  - ./vendor/bin/phpcs src
   - ./vendor/bin/php-cs-fixer fix . --diff --dry-run
   - ./vendor/bin/psalm
   - ./vendor/bin/phpunit --coverage-text
