@@ -34,6 +34,7 @@ final class Insert extends Query
         foreach ($this->parameters as $parameter) {
             $parameters[] = ':'.$parameter;
         }
+
         $parts[] = '('.\implode(', ', $parameters).')';
 
         return \implode(' ', $parts);
