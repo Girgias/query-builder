@@ -26,7 +26,7 @@ class Select extends Query
     /**
      * @var ?array<int, string>
      */
-    protected $having;
+    private $having;
 
     /**
      * @var ?string
@@ -353,15 +353,17 @@ class Select extends Query
      *
      * @return string
      */
-    final public function getQuery(): string
+    public function getQuery(): string
     {
-        if (!\is_null($this->limit) && \is_null($this->order)) {
-            throw new DangerousSqlQueryWarning(
-                'When using LIMIT, it is important to use an ORDER BY clause that constrains the result rows '.
-                'into a unique order. Otherwise you will get an unpredictable subset of the query\'s rows.'
-            );
-        }
+        $parts = $this->buildBeginningSelectQuery();
 
+        \array_push($parts, ...$this->buildSqlClauses());
+
+        return \implode(' ', $parts);
+    }
+
+    final protected function buildBeginningSelectQuery(): array
+    {
         if (\is_null($this->select)) {
             $this->select[] = '*';
         }
@@ -379,37 +381,50 @@ class Select extends Query
             $parts[] = $this->tableAlias;
         }
 
+        return $parts;
+    }
+
+    final protected function buildSqlClauses(): array
+    {
+        if (!\is_null($this->limit) && \is_null($this->order)) {
+            throw new DangerousSqlQueryWarning(
+                'When using LIMIT, it is important to use an ORDER BY clause that constrains the result rows '.
+                'into a unique order. Otherwise you will get an unpredictable subset of the query\'s rows.'
+            );
+        }
+        $clauses = [];
+
         if (!\is_null($this->where)) {
-            $parts[] = 'WHERE';
-            $parts[] = \implode(' AND ', $this->where);
+            $clauses[] = 'WHERE';
+            $clauses[] = \implode(' AND ', $this->where);
         }
 
         if (!\is_null($this->group)) {
-            $parts[] = 'GROUP BY';
-            $parts[] = \implode(' ', $this->group);
+            $clauses[] = 'GROUP BY';
+            $clauses[] = \implode(' ', $this->group);
         }
 
         if (!\is_null($this->having)) {
-            $parts[] = 'HAVING';
-            $parts[] = \implode(' AND ', $this->having);
+            $clauses[] = 'HAVING';
+            $clauses[] = \implode(' AND ', $this->having);
         }
 
         if (!\is_null($this->order)) {
-            $parts[] = 'ORDER BY';
-            $parts[] = \implode(', ', $this->order);
+            $clauses[] = 'ORDER BY';
+            $clauses[] = \implode(', ', $this->order);
         }
 
         if (!\is_null($this->limit)) {
-            $parts[] = 'LIMIT';
-            $parts[] = $this->limit;
+            $clauses[] = 'LIMIT';
+            $clauses[] = $this->limit;
 
             if (!\is_null($this->offset)) {
-                $parts[] = 'OFFSET';
-                $parts[] = $this->offset;
+                $clauses[] = 'OFFSET';
+                $clauses[] = $this->offset;
             }
         }
 
-        return \implode(' ', $parts);
+        return $clauses;
     }
 
     /**

@@ -11,7 +11,7 @@ trait BindField
     /**
      * @var ?array<string, string>
      */
-    protected $parameters;
+    private $parameters;
 
     /**
      * Binds a field to a parameter.

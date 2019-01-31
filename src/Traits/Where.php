@@ -18,7 +18,7 @@ trait Where
     /**
      * @var ?array<int, string>
      */
-    protected $where;
+    private $where;
 
     /**
      * Add a WHERE clause to the Query.
@@ -29,7 +29,7 @@ trait Where
      *
      * @return self
      */
-    public function where(string $column, string $operator, string $parameter): self
+    final public function where(string $column, string $operator, string $parameter): self
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
