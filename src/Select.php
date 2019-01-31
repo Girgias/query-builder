@@ -202,7 +202,7 @@ class Select extends Query
     final public function distinctAggregate(string $column, string $aggregateFunction, string $alias): self
     {
         if (!$this->isValidSqlName($column)) {
-            throw new InvalidSqlColumnNameException('SELECT', $column);
+            throw new InvalidSqlColumnNameException('DISTINCT aggregate function', $column);
         }
 
         if (!AggregateFunctions::isValidValue($aggregateFunction)) {
