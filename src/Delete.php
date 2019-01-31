@@ -23,7 +23,7 @@ final class Delete extends Query
         }
 
         $parts = ['DELETE FROM'];
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
 
         $parts[] = 'WHERE';
         $parts[] = \implode(' AND ', $this->where);

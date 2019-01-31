@@ -374,7 +374,7 @@ class Select extends Query
         $parts[] = \implode(', ', $this->select);
 
         $parts[] = 'FROM';
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
 
         if (!\is_null($this->tableAlias)) {
             $parts[] = 'AS';

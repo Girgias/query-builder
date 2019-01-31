@@ -18,7 +18,7 @@ abstract class Query
     /**
      * @var string
      */
-    protected $table;
+    private $table;
 
     /**
      * Query constructor.
@@ -40,6 +40,11 @@ abstract class Query
      * @return string
      */
     abstract public function getQuery(): string;
+
+    final protected function getTableName(): string
+    {
+        return $this->table;
+    }
 
     /**
      * Checks if argument is a valid SQL name.

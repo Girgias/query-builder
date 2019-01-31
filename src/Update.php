@@ -28,7 +28,7 @@ final class Update extends Query
         }
 
         $parts = ['UPDATE'];
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
         $parts[] = 'SET';
 
         $columns = [];

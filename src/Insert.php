@@ -23,7 +23,7 @@ final class Insert extends Query
         }
 
         $parts = ['INSERT INTO'];
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
 
         $columns = \array_keys($this->parameters);
         $parts[] = '('.\implode(', ', $columns).')';
