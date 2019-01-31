@@ -166,4 +166,20 @@ final class QueryTest extends TestCase
             $query
         );
     }
+
+    public function testReadmeExample5(): void
+    {
+        $query = (new \Girgias\QueryBuilder\SelectJoin('comments', 'posts'))
+            ->tableAlias('co')
+            ->select('co.user', 'co.content', 'p.title')
+            ->joinTableAlias('p')
+            ->innerJoin('post_id', 'id')
+            ->getQuery()
+        ;
+
+        static::assertSame(
+            'SELECT co.user, co.content, p.title FROM comments AS co INNER JOIN posts AS p ON comments.post_id = posts.id',
+            $query
+        );
+    }
 }

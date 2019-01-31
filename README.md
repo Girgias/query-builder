@@ -21,6 +21,9 @@ Every sort of query has its own class which extends from the base Query class,
 They all have the same constructor signature which requires the table name 
 on which to execute the query.
 
+To do a SELECT query with table join use the ``SelectJoin`` class.
+An example can be seen below on how to use this class.
+
 ### Examples
 A basic select query:
 ```php
@@ -79,12 +82,25 @@ Will output:
 UPDATE posts SET title = :title, content = :content, date_last_edited = :now_date WHERE id = :id
 ```
 
+Select INNER join example:
+```php
+$query = (new \Girgias\QueryBuilder\SelectJoin('comments', 'posts'))
+    ->tableAlias('co')
+    ->select('co.user', 'co.content', 'p.title')
+    ->joinTableAlias('p')
+    ->innerJoin('post_id', 'id')
+    ->getQuery();
+```
+Will output:
+```sql
+SELECT co.user, co.content, p.title FROM comments AS co INNER JOIN posts AS p ON comments.post_id = posts.id
+```
+
 ## ToDos
 
 There are some features that are still waiting to be implementing
 
 * WHERE IN and WHERE NOT IN clauses
-* Table joins
 
 ## Contributing
 
