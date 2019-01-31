@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\QueryBuilder\Enums;
@@ -6,8 +7,7 @@ namespace Girgias\QueryBuilder\Enums;
 use Girgias\Enums\Base;
 
 /**
- * Class AggregateFunctions
- * @package Girgias\QueryBuilder
+ * Class AggregateFunctions.
  */
 abstract class AggregateFunctions extends Base
 {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\QueryBuilder\Exceptions;
@@ -7,16 +8,16 @@ use InvalidArgumentException;
 use Throwable;
 
 /**
- * Class InvalidSqlTableNameException
- * @package Girgias\QueryBuilder\Exceptions
+ * Class InvalidSqlTableNameException.
  */
 class InvalidSqlTableNameException extends InvalidArgumentException
 {
     /**
      * InvalidSqlTableNameException constructor.
-     * @param string $table
-     * @param int $code
-     * @param Throwable|null $previous
+     *
+     * @param string         $table
+     * @param int            $code
+     * @param null|Throwable $previous
      */
     public function __construct(string $table, int $code = 0, ?Throwable $previous = null)
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\QueryBuilder;
@@ -7,8 +8,7 @@ use Girgias\QueryBuilder\Enums\SqlReservedWords;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlTableNameException;
 
 /**
- * Class Query
- * @package Girgias\QueryBuilder
+ * Class Query.
  */
 abstract class Query
 {
@@ -35,25 +35,27 @@ abstract class Query
     }
 
     /**
-     * Return built Query
+     * Return built Query.
      *
      * @return string
      */
     abstract public function getQuery(): string;
 
     /**
-     * Checks if argument is a valid SQL name
+     * Checks if argument is a valid SQL name.
      *
      * @param string $name
+     *
      * @return bool
      */
     final protected function isValidSqlName(string $name): bool
     {
-        if (preg_match(self::SQL_NAME_PATTERN, $name) === 1 &&
-            !in_array(strtoupper($name), SqlReservedWords::RESERVED_WORDS)
+        if (1 === \preg_match(self::SQL_NAME_PATTERN, $name) &&
+            !\in_array(\strtoupper($name), SqlReservedWords::RESERVED_WORDS, true)
         ) {
             return true;
         }
+
         return false;
     }
 }

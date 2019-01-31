@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Traits\BindField;
 use Girgias\QueryBuilder\Traits\Where;
-use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use RuntimeException;
 
 class Update extends Query
@@ -13,16 +14,16 @@ class Update extends Query
     use Where, BindField;
 
     /**
-     * Return built Query
+     * Return built Query.
      *
      * @return string
      */
     public function getQuery(): string
     {
-        if (is_null($this->parameters)) {
+        if (\is_null($this->parameters)) {
             throw new RuntimeException('No fields to update defined');
         }
-        if (is_null($this->where)) {
+        if (\is_null($this->where)) {
             throw new DangerousSqlQueryWarning('No WHERE clause in UPDATE query');
         }
 
@@ -33,13 +34,13 @@ class Update extends Query
         $columns = [];
 
         foreach ($this->parameters as $column => $binding) {
-            $columns[] = $column . ' = :' . $binding;
+            $columns[] = $column.' = :'.$binding;
         }
-        $parts[] = join(', ', $columns);
+        $parts[] = \implode(', ', $columns);
 
         $parts[] = 'WHERE';
-        $parts[] = join(' AND ', $this->where);
+        $parts[] = \implode(' AND ', $this->where);
 
-        return join(' ', $parts);
+        return \implode(' ', $parts);
     }
 }

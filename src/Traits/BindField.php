@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\QueryBuilder\Traits;
@@ -12,13 +13,12 @@ trait BindField
      */
     protected $parameters;
 
-    abstract protected function isValidSqlName(string $name): bool;
-
     /**
-     * Binds a field to a parameter
+     * Binds a field to a parameter.
      *
      * @param string $field
      * @param string $parameter
+     *
      * @return self
      */
     final public function bindField(string $field, string $parameter): self
@@ -31,4 +31,6 @@ trait BindField
 
         return $this;
     }
+
+    abstract protected function isValidSqlName(string $name): bool;
 }

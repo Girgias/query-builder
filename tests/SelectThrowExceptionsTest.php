@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Girgias\Tests\QueryBuilder;
@@ -15,89 +16,92 @@ use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class SelectThrowExceptionsTest extends TestCase
+/**
+ * @internal
+ */
+final class SelectThrowExceptionsTest extends TestCase
 {
     private const INVALID_NAME = '2col';
 
     /** Possible exceptions thrown SELECT columns */
-    public function test__Throw__Exception__On__Invalid__Select__Column()
+    public function testThrowExceptionOnInvalidSelectColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->select(self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Select__As__Column()
+    public function testThrowExceptionOnInvalidSelectAsColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->selectAs(self::INVALID_NAME, 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Select__Alias()
+    public function testThrowExceptionOnInvalidSelectAlias(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlAliasNameException::class);
         $query->selectAs('demo', self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Column__when__Select__Aggregate()
+    public function testThrowExceptionOnInvalidColumnWhenSelectAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->selectAggregate(self::INVALID_NAME, AggregateFunctions::COUNT, 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Function__when__Select__Aggregate()
+    public function testThrowExceptionOnInvalidFunctionWhenSelectAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlFunctionException::class);
         $query->selectAggregate('demo', 'not_a_function', 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Alias__when__Select__Aggregate()
+    public function testThrowExceptionOnInvalidAliasWhenSelectAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlAliasNameException::class);
         $query->selectAggregate('demo', AggregateFunctions::COUNT, self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Distinct__Column()
+    public function testThrowExceptionOnInvalidDistinctColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinct(self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Distinct__As__Column()
+    public function testThrowExceptionOnInvalidDistinctAsColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinctAs(self::INVALID_NAME, 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Distinct__Alias()
+    public function testThrowExceptionOnInvalidDistinctAlias(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlAliasNameException::class);
         $query->distinctAs('demo', self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Column__when__Distinct__Aggregate()
+    public function testThrowExceptionOnInvalidColumnWhenDistinctAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->distinctAggregate(self::INVALID_NAME, AggregateFunctions::COUNT, 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Function__when__Distinct__Aggregate()
+    public function testThrowExceptionOnInvalidFunctionWhenDistinctAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlFunctionException::class);
         $query->distinctAggregate('demo', 'not_a_function', 'alias');
     }
 
-    public function test__Throw__Exception__On__Invalid__Alias__when__Distinct__Aggregate()
+    public function testThrowExceptionOnInvalidAliasWhenDistinctAggregate(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlAliasNameException::class);
@@ -105,35 +109,35 @@ class SelectThrowExceptionsTest extends TestCase
     }
 
     /** Possible exceptions thrown SELECT clauses */
-    public function test__Throw__Exception__On__Invalid__Group__Column()
+    public function testThrowExceptionOnInvalidGroupColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->group(self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__Order__Column()
+    public function testThrowExceptionOnInvalidOrderColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->order(self::INVALID_NAME);
     }
 
-    public function test__Throw__Exception__On__Invalid__OrderBy__Order()
+    public function testThrowExceptionOnInvalidOrderByOrder(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidArgumentException::class);
         $query->order('test', 'not a valid order');
     }
 
-    public function test__Throw__Exception__On__OutOfRange__Limit()
+    public function testThrowExceptionOnOutOfRangeLimit(): void
     {
         $query = (new Select('test'));
         $this->expectException(OutOfRangeException::class);
         $query->limit(-1);
     }
 
-    public function test__Throw__Exception__On__OutOfRange__Offset()
+    public function testThrowExceptionOnOutOfRangeOffset(): void
     {
         $query = (new Select('test'));
         $this->expectException(OutOfRangeException::class);
@@ -141,48 +145,49 @@ class SelectThrowExceptionsTest extends TestCase
     }
 
     /** Possible exceptions thrown HAVING clause methods */
-    public function test__Throw__Exception__On__Invalid__Having__Column()
+    public function testThrowExceptionOnInvalidHavingColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->having(self::INVALID_NAME, AggregateFunctions::MAX, SqlOperators::EQUAL, 10);
     }
-    public function test__Throw__Exception__On__Undefined__Having__Operator()
+
+    public function testThrowExceptionOnUndefinedHavingOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
         $query->having('test', AggregateFunctions::MAX, 'not an operator', 10);
     }
 
-    public function test__Throw__Exception__On__Undefined__Having__Function()
+    public function testThrowExceptionOnUndefinedHavingFunction(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlFunctionException::class);
         $query->having('test', 'not a function', SqlOperators::EQUAL, 10);
     }
 
-    public function test__Throw__Exception__On__Invalid__Having__Or__Column()
+    public function testThrowExceptionOnInvalidHavingOrColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->havingOr(self::INVALID_NAME, AggregateFunctions::MAX, SqlOperators::EQUAL, 10);
     }
 
-    public function test__Throw__Exception__On__Undefined__Having__Or__Operator()
+    public function testThrowExceptionOnUndefinedHavingOrOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
         $query->havingOr('test', AggregateFunctions::MAX, 'not an operator', 10);
     }
 
-    public function test__Throw__Exception__On__Undefined__Having__Or__Function()
+    public function testThrowExceptionOnUndefinedHavingOrFunction(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlFunctionException::class);
         $query->havingOr('test', 'not a function', SqlOperators::EQUAL, 10);
     }
 
-    public function test__Throw__Exception__When__Having__Or__Called__Before__Another__Having__Clause()
+    public function testThrowExceptionWhenHavingOrCalledBeforeAnotherHavingClause(): void
     {
         $query = (new Select('test'));
         $this->expectException(RuntimeException::class);
