@@ -1,28 +1,33 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Girgias\QueryBuilder;
 
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
+use Girgias\QueryBuilder\Traits\Where;
 
-class Delete extends Query
+final class Delete extends Query
 {
+    use Where;
 
     /**
-     * Return built Query
+     * Return built Query.
      *
      * @return string
      */
     public function getQuery(): string
     {
-        if (is_null($this->where)) {
+        if (\is_null($this->where)) {
             throw new DangerousSqlQueryWarning('No WHERE clause in DELETE FROM query');
         }
 
         $parts = ['DELETE FROM'];
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
 
         $parts[] = 'WHERE';
-        $parts[] = implode(' AND ', $this->where);
+        $parts[] = \implode(' AND ', $this->where);
 
-        return implode(' ', $parts);
+        return \implode(' ', $parts);
     }
 }

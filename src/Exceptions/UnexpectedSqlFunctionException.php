@@ -1,21 +1,24 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Girgias\QueryBuilder\Exceptions;
 
 use Throwable;
 use UnexpectedValueException;
 
 /**
- * Class UndefinedSqlFunctionException
- * @package Girgias\QueryBuilder\Exceptions
+ * Class UndefinedSqlFunctionException.
  */
 class UnexpectedSqlFunctionException extends UnexpectedValueException
 {
     /**
      * UndefinedSqlFunctionException constructor.
-     * @param string $clause
-     * @param string $function
-     * @param int $code
-     * @param Throwable|null $previous
+     *
+     * @param string         $clause
+     * @param string         $function
+     * @param int            $code
+     * @param null|Throwable $previous
      */
     public function __construct(string $clause, string $function, int $code = 0, ?Throwable $previous = null)
     {

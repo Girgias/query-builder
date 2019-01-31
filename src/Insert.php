@@ -1,40 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Girgias\QueryBuilder;
 
+use Girgias\QueryBuilder\Traits\BindField;
 use RuntimeException;
 
-class Insert extends Query
+final class Insert extends Query
 {
+    use BindField;
 
     /**
-     * Return built Query
+     * Return built Query.
      *
      * @return string
      */
     final public function getQuery(): string
     {
-        if (is_null($this->parameter)) {
+        if (\is_null($this->parameters)) {
             throw new RuntimeException('No fields to update defined');
         }
 
         $parts = ['INSERT INTO'];
-        $parts[] = $this->table;
+        $parts[] = $this->getTableName();
 
-        $columns = [];
-        foreach (array_keys($this->parameter) as $keys) {
-            $columns[] = $keys;
-        }
-        $parts[] = '(' . implode(', ', $columns) . ')';
+        $columns = \array_keys($this->parameters);
+        $parts[] = '('.\implode(', ', $columns).')';
 
         $parts[] = 'VALUES';
 
         $parameters = [];
-        foreach ($this->parameter as $parameter) {
-            $parameters[] = ':' . $parameter;
+        foreach ($this->parameters as $parameter) {
+            $parameters[] = ':'.$parameter;
         }
-        $parts[] = '(' . implode(', ', $parameters) . ')';
 
-        return implode(' ', $parts);
+        $parts[] = '('.\implode(', ', $parameters).')';
+
+        return \implode(' ', $parts);
     }
 }

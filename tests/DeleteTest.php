@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Girgias\Tests\QueryBuilder;
 
 use Girgias\QueryBuilder\Delete;
@@ -7,18 +9,22 @@ use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use PHPUnit\Framework\TestCase;
 
-class DeleteTest extends TestCase
+/**
+ * @internal
+ */
+final class DeleteTest extends TestCase
 {
-    public function test__Delete__Query()
+    public function testDeleteQuery(): void
     {
-        $query = (new Delete("posts"))
-            ->where("id", SqlOperators::EQUAL, "id")
-            ->getQuery();
+        $query = (new Delete('posts'))
+            ->where('id', SqlOperators::EQUAL, 'id')
+            ->getQuery()
+        ;
 
-        $this->assertEquals("DELETE FROM posts WHERE id = :id", $query);
+        static::assertSame('DELETE FROM posts WHERE id = :id', $query);
     }
 
-    public function test__Throw__Exception__On__Dangerous__Delete__Query()
+    public function testThrowExceptionOnDangerousDeleteQuery(): void
     {
         $query = (new Delete('test'));
         $this->expectException(DangerousSqlQueryWarning::class);

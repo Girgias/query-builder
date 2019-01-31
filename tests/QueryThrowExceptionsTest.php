@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Girgias\Tests\QueryBuilder;
 
 use Girgias\QueryBuilder\Enums\SqlOperators;
@@ -15,18 +17,21 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use TypeError;
 
-class QueryThrowExceptionsTest extends TestCase
+/**
+ * @internal
+ */
+final class QueryThrowExceptionsTest extends TestCase
 {
     private const INVALID_NAME = '2col';
 
-    /* EXCEPTION THROWS */
-    public function test__Throw__Exception__On__Invalid__Table__Name()
+    // EXCEPTION THROWS
+    public function testThrowExceptionOnInvalidTableName(): void
     {
         $this->expectException(InvalidSqlTableNameException::class);
         (new Select(self::INVALID_NAME));
     }
 
-    public function test__Throw__Exception__On__Invalid__Table__Alias()
+    public function testThrowExceptionOnInvalidTableAlias(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlAliasNameException::class);
@@ -34,20 +39,21 @@ class QueryThrowExceptionsTest extends TestCase
     }
 
     /** Possible exceptions thrown WHERE clause methods */
-    public function test__Throw__Exception__On__Invalid__Where__Column()
+    public function testThrowExceptionOnInvalidWhereColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random');
     }
-    public function test__Throw__Exception__On__Undefined__Where__Operator()
+
+    public function testThrowExceptionOnUndefinedWhereOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
         $query->where('test', 'not an operator', 'random');
     }
 
-    public function test__Throw__Exception__With__Help__Message__When__Non__Obvious__NotEqualTo__Operator__Used()
+    public function testThrowExceptionWithHelpMessageWhenNonObviousNotEqualToOperatorUsed(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
@@ -55,96 +61,99 @@ class QueryThrowExceptionsTest extends TestCase
         $this->expectExceptionMessage('Did you mean `<>` (ANSI \'not equal to\' operator) ?');
         $query->where('test', '!=', 'random');
     }
-    public function test__Throw__Exception__On__Invalid__Where__Or__Column()
+
+    public function testThrowExceptionOnInvalidWhereOrColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random');
     }
 
-    public function test__Throw__Exception__On__Undefined__Where__Or__Operator()
+    public function testThrowExceptionOnUndefinedWhereOrOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
         $query->whereOr('test', 'not an operator', 'random');
     }
 
-    public function test__Throw__Exception__When__Where__Or__Called__Before__Another__Where__Clause()
+    public function testThrowExceptionWhenWhereOrCalledBeforeAnotherWhereClause(): void
     {
         $query = (new Select('test'));
         $this->expectException(RuntimeException::class);
         $query->whereOr('test', SqlOperators::EQUAL, 'random');
     }
 
-    public function test__Throw__Exception__On__Invalid__Where__Like__Column()
+    public function testThrowExceptionOnInvalidWhereLikeColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->whereLike(self::INVALID_NAME, 'a');
     }
 
-    public function test__Throw__Exception__On__Invalid__Where__Not__Like__Column()
+    public function testThrowExceptionOnInvalidWhereNotLikeColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->whereNotLike(self::INVALID_NAME, 'a');
     }
 
-    public function test__Throw__Exception__On__Invalid__Where__Like__Escape__Char()
+    public function testThrowExceptionOnInvalidWhereLikeEscapeChar(): void
     {
         $query = (new Select('posts'));
         $this->expectException(InvalidArgumentException::class);
         $query->whereNotLike('tags', '%UTF#_8', '##');
     }
 
-    public function test__Throw__Exception_On_Invalid__Where__Between__Column()
+    public function testThrowExceptionOnInvalidWhereBetweenColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->whereBetween(self::INVALID_NAME, 1, 10);
     }
 
-    public function test__Throw__Exception_On_Invalid__Where__Not__Between__Column()
+    public function testThrowExceptionOnInvalidWhereNotBetweenColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
         $query->whereNotBetween(self::INVALID_NAME, 1, 10);
     }
 
-    public function test__Throw__Exception__On__Different__Type__Where__Between__Values()
+    public function testThrowExceptionOnDifferentTypeWhereBetweenValues(): void
     {
         $query = (new Select('test'));
         $this->expectException(TypeError::class);
         $query->whereBetween('demo', 1, (new \DateTime()));
     }
 
-    public function test__Throw__Exception__On__Different__Type__Where__Not__Between__Values()
+    public function testThrowExceptionOnDifferentTypeWhereNotBetweenValues(): void
     {
         $query = (new Select('test'));
         $this->expectException(TypeError::class);
         $query->whereNotBetween('demo', 1, (new \DateTime()));
     }
 
-    public function test__Throw__Exception__On__String__Value__Type__Where__Between()
+    public function testThrowExceptionOnStringValueTypeWhereBetween(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidArgumentException::class);
         $query->whereBetween('demo', 'a', 'd');
     }
-    public function test__Throw__Exception__On__String__Value__Type__Where__Not__Between()
+
+    public function testThrowExceptionOnStringValueTypeWhereNotBetween(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidArgumentException::class);
         $query->whereNotBetween('demo', 'a', 'd');
     }
 
-    public function test__Throw__Exception__On__Bool__Value__Type__Where__Between()
+    public function testThrowExceptionOnBoolValueTypeWhereBetween(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidArgumentException::class);
         $query->whereBetween('demo', true, false);
     }
-    public function test__Throw__Exception__On__Bool__Value__Type__Where__Not__Between()
+
+    public function testThrowExceptionOnBoolValueTypeWhereNotBetween(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidArgumentException::class);
@@ -152,7 +161,7 @@ class QueryThrowExceptionsTest extends TestCase
     }
 
     /** Exception on bindField method */
-    public function test__Throw__Exception__On__Invalid__Field__To__Bind()
+    public function testThrowExceptionOnInvalidFieldToBind(): void
     {
         $query = (new Insert('test'));
         $this->expectException(InvalidSqlFieldNameException::class);
