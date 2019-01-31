@@ -12,7 +12,7 @@ use Girgias\QueryBuilder\Exceptions\InvalidSqlTableNameException;
  */
 abstract class Query
 {
-    protected const SQL_NAME_PATTERN = '#^[a-z_]+(.[a-z0-9_])*$#';
+    protected const SQL_NAME_PATTERN = '/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)*$/';
     protected const SQL_DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**

@@ -21,6 +21,7 @@ final class CheckSqlNamesTest extends TestCase
 
         static::assertTrue($method->invoke($query, 'p'));
         static::assertTrue($method->invoke($query, 'p.field'));
+        static::assertTrue($method->invoke($query, 'co.user'));
         static::assertTrue($method->invoke($query, 'p.table.col'));
         static::assertTrue($method->invoke($query, 'semi_long_table_name'));
         static::assertTrue($method->invoke($query, 'semi_lo43g_table_n22e'));
