@@ -9,7 +9,7 @@ use Girgias\QueryBuilder\Traits\BindField;
 use Girgias\QueryBuilder\Traits\Where;
 use RuntimeException;
 
-class Update extends Query
+final class Update extends Query
 {
     use Where, BindField;
 

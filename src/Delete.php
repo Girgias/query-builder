@@ -7,7 +7,7 @@ namespace Girgias\QueryBuilder;
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Traits\Where;
 
-class Delete extends Query
+final class Delete extends Query
 {
     use Where;
 

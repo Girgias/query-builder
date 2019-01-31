@@ -7,7 +7,7 @@ namespace Girgias\QueryBuilder;
 use Girgias\QueryBuilder\Traits\BindField;
 use RuntimeException;
 
-class Insert extends Query
+final class Insert extends Query
 {
     use BindField;
 
