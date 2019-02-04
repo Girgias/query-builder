@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Girgias\Tests\QueryBuilder;
 
-use Girgias\QueryBuilder\Enums\SqlOperators;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,7 +62,7 @@ final class ReadmeTest extends TestCase
     public function testReadmeExample4(): void
     {
         $query = (new \Girgias\QueryBuilder\Update('posts'))
-            ->where('id', SqlOperators::EQUAL, 'id')
+            ->where('id', '=', 'id')
             ->bindField('title', 'title')
             ->bindField('content', 'content')
             ->bindField('date_last_edited', 'now_date')

@@ -71,7 +71,7 @@ SELECT * FROM demo WHERE (author = :author OR editor = :editor)
 Update example:
 ```php
 $query = (new \Girgias\QueryBuilder\Update("posts"))
-    ->where("id", SqlOperators::EQUAL, "id")
+    ->where("id", '=', "id")
     ->bindField("title", "title")
     ->bindField("content", "content")
     ->bindField("date_last_edited", "now_date")
