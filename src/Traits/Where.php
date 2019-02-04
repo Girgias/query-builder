@@ -167,7 +167,7 @@ trait Where
         if (\is_null($escapeChar)) {
             return '';
         }
-        if (1 !== \mb_strlen($escapeChar)) {
+        if (1 !== \strlen($escapeChar)) {
             throw new InvalidArgumentException('Escape character for LIKE clause must be of length 1');
         }
 
