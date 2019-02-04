@@ -32,5 +32,7 @@ trait BindField
         return $this;
     }
 
+    abstract protected function addStatementParameter(?string $parameter, $value): void;
+
     abstract protected function isValidSqlName(string $name): bool;
 }
