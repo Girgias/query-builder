@@ -24,7 +24,7 @@ abstract class Query
     private $table;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, scalar>
      */
     private $parameters = [];
 
@@ -61,7 +61,7 @@ abstract class Query
 
     /**
      * @param null|string $parameter
-     * @param mixed       $value
+     * @param scalar      $value
      */
     final protected function addStatementParameter(?string $parameter, $value): void
     {
