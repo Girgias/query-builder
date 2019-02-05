@@ -18,24 +18,24 @@ final class Insert extends Query
      */
     final public function getQuery(): string
     {
-        if (\is_null($this->parameters)) {
+        if (\is_null($this->fields)) {
             throw new RuntimeException('No fields to update defined');
         }
 
         $parts = ['INSERT INTO'];
         $parts[] = $this->getTableName();
 
-        $columns = \array_keys($this->parameters);
+        $columns = \array_keys($this->fields);
         $parts[] = '('.\implode(', ', $columns).')';
 
         $parts[] = 'VALUES';
 
-        $parameters = [];
-        foreach ($this->parameters as $parameter) {
-            $parameters[] = ':'.$parameter;
+        $namedParameters = [];
+        foreach ($this->fields as $namedParameter) {
+            $namedParameters[] = ':'.$namedParameter;
         }
 
-        $parts[] = '('.\implode(', ', $parameters).')';
+        $parts[] = '('.\implode(', ', $namedParameters).')';
 
         return \implode(' ', $parts);
     }

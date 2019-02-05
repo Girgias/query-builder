@@ -20,7 +20,7 @@ final class Update extends Query
      */
     public function getQuery(): string
     {
-        if (\is_null($this->parameters)) {
+        if (\is_null($this->fields)) {
             throw new RuntimeException('No fields to update defined');
         }
         if (\is_null($this->where)) {
@@ -33,7 +33,7 @@ final class Update extends Query
 
         $columns = [];
 
-        foreach ($this->parameters as $column => $binding) {
+        foreach ($this->fields as $column => $binding) {
             $columns[] = $column.' = :'.$binding;
         }
         $parts[] = \implode(', ', $columns);
