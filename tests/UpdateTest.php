@@ -18,7 +18,7 @@ final class UpdateTest extends TestCase
     public function testUpdateQueryWithOneParameter(): void
     {
         $query = (new Update('posts'))
-            ->where('id', SqlOperators::EQUAL, 'id')
+            ->where('id', SqlOperators::EQUAL, 1, 'id')
             ->bindField('username', 'Alice', 'username')
             ->getQuery()
         ;
@@ -29,7 +29,7 @@ final class UpdateTest extends TestCase
     public function testUpdateQueryWithTwoParameter(): void
     {
         $query = (new Update('posts'))
-            ->where('id', SqlOperators::EQUAL, 'id')
+            ->where('id', SqlOperators::EQUAL, 1, 'id')
             ->bindField('username', 'Alice', 'username')
             ->bindField('age', 20, 'age')
             ->getQuery()
@@ -41,7 +41,7 @@ final class UpdateTest extends TestCase
     public function testThrowExceptionOnUpdateQueryWithoutParameters(): void
     {
         $query = (new Update('posts'))
-            ->where('id', SqlOperators::EQUAL, 'id')
+            ->where('id', SqlOperators::EQUAL, 1, 'id')
         ;
         $this->expectException(RuntimeException::class);
         $query->getQuery();

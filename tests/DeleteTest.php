@@ -17,7 +17,7 @@ final class DeleteTest extends TestCase
     public function testDeleteQuery(): void
     {
         $query = (new Delete('posts'))
-            ->where('id', SqlOperators::EQUAL, 'id')
+            ->where('id', SqlOperators::EQUAL, 1, 'id')
             ->getQuery()
         ;
 

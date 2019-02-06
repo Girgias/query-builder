@@ -57,9 +57,9 @@ SELECT title, slug, name_author_post AS author FROM demo WHERE date_published BE
 
 An example with the ``whereOr`` method:
 ```php
-$query = (new \Girgias\QueryBuilder\Select("demo"))
-    ->where("author", "=", "author")
-    ->whereOr("editor", "=", "editor")
+$query = (new \Girgias\QueryBuilder\Select('demo'))
+    ->where('author', '=', 'Alice', 'author')
+    ->whereOr('editor', '=', 'Alice', 'editor')
     ->getQuery();
 ```
 
@@ -70,8 +70,8 @@ SELECT * FROM demo WHERE (author = :author OR editor = :editor)
 
 Update example:
 ```php
-$query = (new \Girgias\QueryBuilder\Update("posts"))
-    ->where("id", '=', "id")
+$query = (new \Girgias\QueryBuilder\Update('posts'))
+    ->where('id', '=', 1, 'id')
     ->bindField('title', 'This is a title', 'title')
     ->bindField('content', 'Hello World', 'content')
     ->bindField('date_last_edited', '2019-02-06', 'nowDate')

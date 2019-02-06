@@ -48,8 +48,8 @@ final class ReadmeTest extends TestCase
     public function testReadmeExample3(): void
     {
         $query = (new \Girgias\QueryBuilder\Select('demo'))
-            ->where('author', '=', 'author')
-            ->whereOr('editor', '=', 'editor')
+            ->where('author', '=', 'Alice', 'author')
+            ->whereOr('editor', '=', 'Alice', 'editor')
             ->getQuery()
         ;
 
@@ -62,7 +62,7 @@ final class ReadmeTest extends TestCase
     public function testReadmeExample4(): void
     {
         $query = (new \Girgias\QueryBuilder\Update('posts'))
-            ->where('id', '=', 'id')
+            ->where('id', '=', 1, 'id')
             ->bindField('title', 'This is a title', 'title')
             ->bindField('content', 'Hello World', 'content')
             ->bindField('date_last_edited', '2019-02-06', 'nowDate')

@@ -24,14 +24,14 @@ final class WhereClauseTest extends TestCase
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
-        $query->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random');
+        $query->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
-        $query->where('test', 'not an operator', 'random');
+        $query->where('test', 'not an operator', 'random', 'random');
     }
 
     public function testThrowExceptionWithHelpMessageWhenNonObviousNotEqualToOperatorUsed(): void
@@ -40,52 +40,52 @@ final class WhereClauseTest extends TestCase
         $this->expectException(UnexpectedSqlOperatorException::class);
         // This tests if the message is contained in the Exception message not an exact comparison.
         $this->expectExceptionMessage('Did you mean `<>` (ANSI \'not equal to\' operator) ?');
-        $query->where('test', '!=', 'random');
+        $query->where('test', '!=', 'random', 'random');
     }
 
     public function testQueryWhereOr(): void
     {
         $query = (new Select('posts'))
-            ->where('author', SqlOperators::EQUAL, 'demo1')
-            ->whereOr('author', SqlOperators::EQUAL, 'demo2')
+            ->where('author', SqlOperators::EQUAL, 'Alice', 'firstAuthor')
+            ->whereOr('author', SqlOperators::EQUAL, 'Bob', 'secondAuthor')
             ->getQuery()
         ;
 
-        static::assertSame('SELECT * FROM posts WHERE (author = :demo1 OR author = :demo2)', $query);
+        static::assertSame('SELECT * FROM posts WHERE (author = :firstAuthor OR author = :secondAuthor)', $query);
     }
 
     public function testThrowExceptionWhenWhereOrCalledBeforeAnotherWhereClause(): void
     {
         $query = (new Select('test'));
         $this->expectException(RuntimeException::class);
-        $query->whereOr('test', SqlOperators::EQUAL, 'random');
+        $query->whereOr('test', SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnInvalidWhereOrColumn(): void
     {
         $query = (new Select('test'));
         $this->expectException(InvalidSqlColumnNameException::class);
-        $query->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random');
+        $query->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOrOperator(): void
     {
         $query = (new Select('test'));
         $this->expectException(UnexpectedSqlOperatorException::class);
-        $query->whereOr('test', 'not an operator', 'random');
+        $query->whereOr('test', 'not an operator', 'random', 'random');
     }
 
     public function testQueryWhereAndOr(): void
     {
         $query = (new Select('posts'))
-            ->where('author', SqlOperators::EQUAL, 'demo1')
-            ->whereOr('author', SqlOperators::EQUAL, 'demo2')
-            ->where('published', SqlOperators::EQUAL, 'status')
+            ->where('author', SqlOperators::EQUAL, 'Alice', 'firstAuthor')
+            ->whereOr('author', SqlOperators::EQUAL, 'Bob', 'secondAuthor')
+            ->where('published', SqlOperators::EQUAL, true, 'status')
             ->getQuery()
         ;
 
         static::assertSame(
-            'SELECT * FROM posts WHERE (author = :demo1 OR author = :demo2) AND published = :status',
+            'SELECT * FROM posts WHERE (author = :firstAuthor OR author = :secondAuthor) AND published = :status',
             $query
         );
     }

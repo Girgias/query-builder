@@ -192,7 +192,7 @@ final class SelectTest extends TestCase
             ->tableAlias('p')
             ->distinct('title')
             ->limit(15, 5)
-            ->where('published', SqlOperators::EQUAL, 'status')
+            ->where('published', SqlOperators::EQUAL, true, 'status')
             ->having(
                 'score',
                 AggregateFunctions::AVERAGE,

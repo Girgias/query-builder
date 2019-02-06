@@ -23,13 +23,14 @@ trait Where
     /**
      * Add a WHERE clause to the Query.
      *
-     * @param string $column
-     * @param string $operator
-     * @param string $parameter
+     * @param string      $column
+     * @param string      $operator
+     * @param mixed       $value
+     * @param null|string $parameter
      *
      * @return self
      */
-    final public function where(string $column, string $operator, string $parameter): self
+    final public function where(string $column, string $operator, $value, ?string $parameter = null): self
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
@@ -39,6 +40,8 @@ trait Where
             throw new UnexpectedSqlOperatorException('WHERE', $operator);
         }
 
+        $parameter = $this->addStatementParameter($parameter, $value);
+
         $this->where[] = $column.' '.$operator.' :'.$parameter;
 
         return $this;
@@ -47,13 +50,14 @@ trait Where
     /**
      * Add a WHERE clause to the Query which should be ORed with the previous use of a WHERE clause.
      *
-     * @param string $column
-     * @param string $operator
-     * @param string $parameter
+     * @param string      $column
+     * @param string      $operator
+     * @param mixed       $value
+     * @param null|string $parameter
      *
      * @return self
      */
-    final public function whereOr(string $column, string $operator, string $parameter): self
+    final public function whereOr(string $column, string $operator, $value, ?string $parameter = null): self
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
@@ -66,6 +70,8 @@ trait Where
         if (\is_null($this->where)) {
             throw new RuntimeException('Need to define at least another WHERE clause before utilizing whereOr method');
         }
+
+        $parameter = $this->addStatementParameter($parameter, $value);
 
         $this->where[] = '('.\array_pop($this->where).' OR '.
             $column.' '.$operator.' :'.$parameter.')';
