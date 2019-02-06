@@ -80,6 +80,17 @@ final class QueryTest extends TestCase
         static::assertCount(2, $property->getValue($stub));
     }
 
+    public function testAddParameterExceptionOnInvalidValueType(): void
+    {
+        $stub = static::getMockForAbstractClass(Query::class, [], '', false);
+
+        $method = new ReflectionMethod($stub, 'addStatementParameter');
+        $method->setAccessible(true);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $method->invoke($stub, 'param', []);
+    }
+
     public function testAddParameterExceptionOnInvalidParameterName(): void
     {
         $stub = static::getMockForAbstractClass(Query::class, [], '', false);
