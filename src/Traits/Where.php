@@ -84,11 +84,7 @@ trait Where
      */
     final public function whereLike(string $column, string $pattern, ?string $escapeChar = null): self
     {
-        if (!$this->isValidSqlName($column)) {
-            throw new InvalidSqlColumnNameException('WHERE LIKE', $column);
-        }
-
-        $this->where[] = $column.' LIKE \''.$pattern.'\''.$this->escape($escapeChar);
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, '');
 
         return $this;
     }
@@ -104,11 +100,7 @@ trait Where
      */
     final public function whereNotLike(string $column, string $pattern, ?string $escapeChar = null): self
     {
-        if (!$this->isValidSqlName($column)) {
-            throw new InvalidSqlColumnNameException('WHERE NOT LIKE', $column);
-        }
-
-        $this->where[] = $column.' NOT LIKE \''.$pattern.'\''.$this->escape($escapeChar);
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, 'NOT ');
 
         return $this;
     }
@@ -148,6 +140,19 @@ trait Where
     abstract protected function addStatementParameter(?string $parameter, $value): string;
 
     abstract protected function isValidSqlName(string $name): bool;
+
+    final private function buildLikeClause(
+        string $column,
+        string $pattern,
+        ?string $escapeChar = null,
+        string $type = ''
+    ): string {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('WHERE '.$type.'LIKE', $column);
+        }
+
+        return $column.' '.$type.'LIKE \''.$pattern.'\''.$this->escape($escapeChar);
+    }
 
     /**
      * @param null|string $escapeChar
