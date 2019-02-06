@@ -62,8 +62,10 @@ abstract class Query
     /**
      * @param null|string $parameter
      * @param mixed       $value
+     *
+     * @return string named parameter
      */
-    final protected function addStatementParameter(?string $parameter, $value): void
+    final protected function addStatementParameter(?string $parameter, $value): string
     {
         if (!\is_scalar($value)) {
             throw new \InvalidArgumentException('Statement parameter value must be a scalar.');
@@ -72,9 +74,7 @@ abstract class Query
         if (\is_null($parameter)) {
             $parameter = $this->generateSqlParameter();
             if (\array_key_exists($parameter, $this->parameters)) {
-                $this->addStatementParameter(null, $value);
-
-                return;
+                return $this->addStatementParameter(null, $value);
             }
         }
 
@@ -87,6 +87,8 @@ abstract class Query
         }
 
         $this->parameters[$parameter] = $value;
+
+        return $parameter;
     }
 
     /**

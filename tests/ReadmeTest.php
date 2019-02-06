@@ -63,14 +63,14 @@ final class ReadmeTest extends TestCase
     {
         $query = (new \Girgias\QueryBuilder\Update('posts'))
             ->where('id', '=', 'id')
-            ->bindField('title', 'title')
-            ->bindField('content', 'content')
-            ->bindField('date_last_edited', 'now_date')
+            ->bindField('title', 'This is a title', 'title')
+            ->bindField('content', 'Hello World', 'content')
+            ->bindField('date_last_edited', '2019-02-06', 'nowDate')
             ->getQuery()
         ;
 
         static::assertSame(
-            'UPDATE posts SET title = :title, content = :content, date_last_edited = :now_date WHERE id = :id',
+            'UPDATE posts SET title = :title, content = :content, date_last_edited = :nowDate WHERE id = :id',
             $query
         );
     }

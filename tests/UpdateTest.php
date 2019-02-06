@@ -19,7 +19,7 @@ final class UpdateTest extends TestCase
     {
         $query = (new Update('posts'))
             ->where('id', SqlOperators::EQUAL, 'id')
-            ->bindField('username', 'username')
+            ->bindField('username', 'Alice', 'username')
             ->getQuery()
         ;
 
@@ -30,8 +30,8 @@ final class UpdateTest extends TestCase
     {
         $query = (new Update('posts'))
             ->where('id', SqlOperators::EQUAL, 'id')
-            ->bindField('username', 'username')
-            ->bindField('age', 'age')
+            ->bindField('username', 'Alice', 'username')
+            ->bindField('age', 20, 'age')
             ->getQuery()
         ;
 
