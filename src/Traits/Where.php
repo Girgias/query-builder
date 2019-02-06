@@ -116,7 +116,7 @@ trait Where
      */
     final public function whereBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenSqlString($column, $start, $end, '');
+        $this->where[] = $this->buildBetweenClause($column, $start, $end, '');
 
         return $this;
     }
@@ -132,7 +132,7 @@ trait Where
      */
     final public function whereNotBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenSqlString($column, $start, $end, 'NOT ');
+        $this->where[] = $this->buildBetweenClause($column, $start, $end, 'NOT ');
 
         return $this;
     }
@@ -179,7 +179,7 @@ trait Where
      *
      * @return string
      */
-    final private function buildBetweenSqlString(string $column, $start, $end, string $type = ''): string
+    final private function buildBetweenClause(string $column, $start, $end, string $type = ''): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'BETWEEN', $column);
