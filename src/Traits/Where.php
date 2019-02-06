@@ -124,11 +124,7 @@ trait Where
      */
     final public function whereBetween(string $column, $start, $end): self
     {
-        if (!$this->isValidSqlName($column)) {
-            throw new InvalidSqlColumnNameException('WHERE BETWEEN', $column);
-        }
-
-        $this->where[] = $column.' BETWEEN '.$this->buildBetweenSqlString($start, $end);
+        $this->where[] = $this->buildBetweenSqlString($column, $start, $end, '');
 
         return $this;
     }
@@ -144,11 +140,7 @@ trait Where
      */
     final public function whereNotBetween(string $column, $start, $end): self
     {
-        if (!$this->isValidSqlName($column)) {
-            throw new InvalidSqlColumnNameException('WHERE NOT BETWEEN', $column);
-        }
-
-        $this->where[] = $column.' NOT BETWEEN '.$this->buildBetweenSqlString($start, $end);
+        $this->where[] = $this->buildBetweenSqlString($column, $start, $end, 'NOT ');
 
         return $this;
     }
@@ -175,22 +167,28 @@ trait Where
     }
 
     /**
-     * @param mixed $start
-     * @param mixed $end
+     * @param string $column
+     * @param mixed  $start
+     * @param mixed  $end
+     * @param string $type
      *
      * @return string
      */
-    final private function buildBetweenSqlString($start, $end): string
+    final private function buildBetweenSqlString(string $column, $start, $end, string $type = ''): string
     {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('WHERE '.$type.'BETWEEN', $column);
+        }
+
         if (\gettype($start) !== \gettype($end)) {
-            throw new TypeError('Start and End values provided to WHERE NOT BETWEEN are of different types');
+            throw new TypeError('Start and End values provided to WHERE '.$type.'BETWEEN are of different types');
         }
 
         if (!\is_int($start) && !\is_float($start) && !($start instanceof DateTimeInterface) &&
             !\is_int($end) && !\is_float($end) && !($end instanceof DateTimeInterface)
         ) {
             throw new InvalidArgumentException(
-                'Values for WHERE NOT BETWEEN clause must be an integer, float or a DateTimeInterface. '
+                'Values for WHERE '.$type.'BETWEEN clause must be an integer, float or a DateTimeInterface. '
                 .'Input was of type:'.\gettype($start)
             );
         }
@@ -200,6 +198,6 @@ trait Where
             $end = '\''.$end->format(Query::SQL_DATE_FORMAT).'\'';
         }
 
-        return (string) $start.' AND '.(string) $end;
+        return $column.' '.$type.'BETWEEN '.(string) $start.' AND '.(string) $end;
     }
 }
