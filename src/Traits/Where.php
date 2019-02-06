@@ -79,12 +79,17 @@ trait Where
      * @param string      $column
      * @param string      $pattern
      * @param null|string $escapeChar
+     * @param null|string $namedParameter
      *
      * @return self
      */
-    final public function whereLike(string $column, string $pattern, ?string $escapeChar = null): self
-    {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, '');
+    final public function whereLike(
+        string $column,
+        string $pattern,
+        ?string $escapeChar = null,
+        ?string $namedParameter = null
+    ): self {
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, '');
 
         return $this;
     }
@@ -95,12 +100,17 @@ trait Where
      * @param string      $column
      * @param string      $pattern
      * @param null|string $escapeChar
+     * @param null|string $namedParameter
      *
      * @return self
      */
-    final public function whereNotLike(string $column, string $pattern, ?string $escapeChar = null): self
-    {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, 'NOT ');
+    final public function whereNotLike(
+        string $column,
+        string $pattern,
+        ?string $escapeChar = null,
+        ?string $namedParameter = null
+    ): self {
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, 'NOT ');
 
         return $this;
     }
@@ -145,13 +155,16 @@ trait Where
         string $column,
         string $pattern,
         ?string $escapeChar = null,
+        ?string $namedParameter = null,
         string $type = ''
     ): string {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'LIKE', $column);
         }
 
-        return $column.' '.$type.'LIKE \''.$pattern.'\''.$this->escape($escapeChar);
+        $namedParameter = $this->addStatementParameter($namedParameter, $pattern);
+
+        return $column.' '.$type.'LIKE :'.$namedParameter.$this->escape($escapeChar);
     }
 
     /**

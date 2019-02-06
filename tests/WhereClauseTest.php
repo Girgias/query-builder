@@ -93,11 +93,11 @@ final class WhereClauseTest extends TestCase
     public function testQueryWhereNotLikeWithEscapeChar(): void
     {
         $query = (new Select('posts'))
-            ->whereNotLike('tags', '%UTF#_8', '#')
+            ->whereNotLike('tags', '%UTF#_8', '#', 'pattern')
             ->getQuery()
         ;
 
-        static::assertSame("SELECT * FROM posts WHERE tags NOT LIKE '%UTF#_8' ESCAPE '#'", $query);
+        static::assertSame("SELECT * FROM posts WHERE tags NOT LIKE :pattern ESCAPE '#'", $query);
     }
 
     public function testThrowExceptionOnInvalidWhereLikeColumn(): void

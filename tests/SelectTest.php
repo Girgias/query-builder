@@ -199,14 +199,14 @@ final class SelectTest extends TestCase
                 SqlOperators::MORE_THAN,
                 20
             )
-            ->whereLike('author', 'John%')
+            ->whereLike('author', 'John%', null, 'pattern')
             ->order('date_creation')
             ->group('id')
             ->getQuery()
         ;
 
         static::assertSame(
-            "SELECT DISTINCT title FROM posts AS p WHERE published = :status AND author LIKE 'John%' ".
+            'SELECT DISTINCT title FROM posts AS p WHERE published = :status AND author LIKE :pattern '.
             'GROUP BY id HAVING AVG(score) > 20 ORDER BY date_creation ASC LIMIT 15 OFFSET 5',
             $query
         );
