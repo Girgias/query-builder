@@ -27,9 +27,9 @@ An example can be seen below on how to use this class.
 ### Examples
 A basic select query:
 ```php
-$query = (new \Girgias\QueryBuilder\Select("demo"))
+$query = (new \Girgias\QueryBuilder\Select('demo'))
     ->limit(10, 20)
-    ->order("published_date")
+    ->order('published_date')
     ->getQuery();
 ```
 Will output:
@@ -39,13 +39,13 @@ SELECT * FROM demo ORDER BY published_date ASC LIMIT 10 OFFSET 20
 
 A more complex select query:
 ```php
-$start = new \DateTime("01/01/2016");
-$end   = new \DateTime("01/01/2017");
-$query = (new \Girgias\QueryBuilder\Select("demo"))
-    ->select("title", "slug")
-    ->selectAs("name_author_post", "author")
-    ->whereBetween("date_published", $start, $end)
-    ->order("date_published", "DESC")
+$start = new \DateTime('01/01/2016');
+$end = new \DateTime('01/01/2017');
+$query = (new \Girgias\QueryBuilder\Select('demo'))
+    ->select('title', 'slug')
+    ->selectAs('name_author_post', 'author')
+    ->whereBetween('date_published', $start, $end)
+    ->order('date_published', 'DESC')
     ->limit(25)
     ->getQuery();
 ```
