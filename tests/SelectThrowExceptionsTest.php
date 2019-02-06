@@ -23,6 +23,13 @@ final class SelectThrowExceptionsTest extends TestCase
 {
     private const INVALID_NAME = '2col';
 
+    public function testThrowExceptionOnInvalidTableAlias(): void
+    {
+        $query = (new Select('test'));
+        $this->expectException(InvalidSqlAliasNameException::class);
+        $query->tableAlias(self::INVALID_NAME);
+    }
+
     /** Possible exceptions thrown SELECT columns */
     public function testThrowExceptionOnInvalidSelectColumn(): void
     {

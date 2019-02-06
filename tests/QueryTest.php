@@ -6,6 +6,7 @@ namespace Girgias\Tests\QueryBuilder;
 
 use Girgias\QueryBuilder\Exceptions\DuplicateSqlParameter;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlParameterException;
+use Girgias\QueryBuilder\Exceptions\InvalidSqlTableNameException;
 use Girgias\QueryBuilder\Query;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
@@ -15,6 +16,12 @@ use ReflectionMethod;
  */
 final class QueryTest extends TestCase
 {
+    public function testThrowExceptionOnInvalidTableName(): void
+    {
+        $this->expectException(InvalidSqlTableNameException::class);
+        static::getMockForAbstractClass(Query::class, ['1nvalid_table']);
+    }
+
     /**
      * @covers \Girgias\QueryBuilder\Query::generateSqlParameter
      */
