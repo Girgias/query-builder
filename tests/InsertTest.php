@@ -37,7 +37,7 @@ final class InsertTest extends TestCase
     public function testThrowExceptionOnInsertQueryWithoutParameters(): void
     {
         $query = (new Insert('posts'));
-        $this->expectException(RuntimeException::class);
+        static::expectException(RuntimeException::class);
         $query->getQuery();
     }
 }

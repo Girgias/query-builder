@@ -19,7 +19,7 @@ final class SelectJoinTest extends TestCase
 
     public function testThrowExceptionOnInvalidTableName(): void
     {
-        $this->expectException(InvalidSqlTableNameException::class);
+        static::expectException(InvalidSqlTableNameException::class);
         (new SelectJoin('demo', self::INVALID_NAME));
     }
 
@@ -37,14 +37,14 @@ final class SelectJoinTest extends TestCase
     public function testThrowExceptionOnInvalidTableAlias(): void
     {
         $query = (new SelectJoin('demo', 'test'));
-        $this->expectException(InvalidSqlAliasNameException::class);
+        static::expectException(InvalidSqlAliasNameException::class);
         $query->joinTableAlias(self::INVALID_NAME);
     }
 
     public function testThrowExceptionWithoutJoinType(): void
     {
         $query = (new SelectJoin('demo', 'test'));
-        $this->expectException(\DomainException::class);
+        static::expectException(\DomainException::class);
         $query->getQuery();
     }
 

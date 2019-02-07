@@ -18,7 +18,7 @@ final class QueryTest extends TestCase
 {
     public function testThrowExceptionOnInvalidTableName(): void
     {
-        $this->expectException(InvalidSqlTableNameException::class);
+        static::expectException(InvalidSqlTableNameException::class);
         static::getMockForAbstractClass(Query::class, ['1nvalid_table']);
     }
 
@@ -94,7 +94,7 @@ final class QueryTest extends TestCase
         $method = new ReflectionMethod($stub, 'addStatementParameter');
         $method->setAccessible(true);
 
-        $this->expectException(\InvalidArgumentException::class);
+        static::expectException(\InvalidArgumentException::class);
         $method->invoke($stub, 'param', []);
     }
 
@@ -105,7 +105,7 @@ final class QueryTest extends TestCase
         $method = new ReflectionMethod($stub, 'addStatementParameter');
         $method->setAccessible(true);
 
-        $this->expectException(InvalidSqlParameterException::class);
+        static::expectException(InvalidSqlParameterException::class);
         $method->invoke($stub, '25invalidName', 'test');
     }
 
@@ -117,7 +117,7 @@ final class QueryTest extends TestCase
         $method->setAccessible(true);
         $method->invoke($stub, 'duplicate', 'test');
 
-        $this->expectException(DuplicateSqlParameter::class);
+        static::expectException(DuplicateSqlParameter::class);
         $method->invoke($stub, 'duplicate', 'demo');
     }
 

@@ -216,7 +216,7 @@ final class SelectTest extends TestCase
     public function testThrowExceptionOnSelectLimitWithoutOrderClause(): void
     {
         $query = (new Select('test'))->limit(5);
-        $this->expectException(DangerousSqlQueryWarning::class);
+        static::expectException(DangerousSqlQueryWarning::class);
         $query->getQuery();
     }
 }

@@ -18,7 +18,7 @@ final class BindFieldTest extends TestCase
     public function testThrowExceptionOnInvalidFieldToBind(): void
     {
         $query = (new Insert('test'));
-        $this->expectException(InvalidSqlFieldNameException::class);
+        static::expectException(InvalidSqlFieldNameException::class);
         $query->bindField(self::INVALID_NAME, 'field');
     }
 }

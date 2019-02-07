@@ -27,7 +27,7 @@ final class DeleteTest extends TestCase
     public function testThrowExceptionOnDangerousDeleteQuery(): void
     {
         $query = (new Delete('test'));
-        $this->expectException(DangerousSqlQueryWarning::class);
+        static::expectException(DangerousSqlQueryWarning::class);
         $query->getQuery();
     }
 }

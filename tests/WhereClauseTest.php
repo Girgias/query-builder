@@ -23,23 +23,23 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionOnInvalidWhereColumn(): void
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOperator(): void
     {
         $query = (new Select('test'));
-        $this->expectException(UnexpectedSqlOperatorException::class);
+        static::expectException(UnexpectedSqlOperatorException::class);
         $query->where('test', 'not an operator', 'random', 'random');
     }
 
     public function testThrowExceptionWithHelpMessageWhenNonObviousNotEqualToOperatorUsed(): void
     {
         $query = (new Select('test'));
-        $this->expectException(UnexpectedSqlOperatorException::class);
+        static::expectException(UnexpectedSqlOperatorException::class);
         // This tests if the message is contained in the Exception message not an exact comparison.
-        $this->expectExceptionMessage('Did you mean `<>` (ANSI \'not equal to\' operator) ?');
+        static::expectExceptionMessage('Did you mean `<>` (ANSI \'not equal to\' operator) ?');
         $query->where('test', '!=', 'random', 'random');
     }
 
@@ -57,21 +57,21 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionWhenWhereOrCalledBeforeAnotherWhereClause(): void
     {
         $query = (new Select('test'));
-        $this->expectException(RuntimeException::class);
+        static::expectException(RuntimeException::class);
         $query->whereOr('test', SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnInvalidWhereOrColumn(): void
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOrOperator(): void
     {
         $query = (new Select('test'));
-        $this->expectException(UnexpectedSqlOperatorException::class);
+        static::expectException(UnexpectedSqlOperatorException::class);
         $query->whereOr('test', 'not an operator', 'random', 'random');
     }
 
@@ -113,7 +113,7 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionOnInvalidWhereIsNullColumn(): void
     {
         $query = (new Select('test'));
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereIsNull(self::INVALID_NAME);
     }
 
@@ -142,7 +142,7 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionWhenWhereOrNullCalledBeforeAnotherWhereClause(): void
     {
         $query = (new Select('test'));
-        $this->expectException(RuntimeException::class);
+        static::expectException(RuntimeException::class);
         $query->whereOrIsNull('test');
     }
 
@@ -159,21 +159,21 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionOnInvalidWhereLikeColumn(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereLike(self::INVALID_NAME, 'a');
     }
 
     public function testThrowExceptionOnInvalidWhereNotLikeColumn(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereNotLike(self::INVALID_NAME, 'a');
     }
 
     public function testThrowExceptionOnInvalidWhereLikeEscapeChar(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidArgumentException::class);
+        static::expectException(InvalidArgumentException::class);
         $query->whereNotLike('tags', '%UTF#_8', '##');
     }
 
@@ -230,56 +230,56 @@ final class WhereClauseTest extends TestCase
     public function testThrowExceptionOnInvalidWhereBetweenColumn(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereBetween(self::INVALID_NAME, 1, 10);
     }
 
     public function testThrowExceptionOnInvalidWhereNotBetweenColumn(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidSqlColumnNameException::class);
+        static::expectException(InvalidSqlColumnNameException::class);
         $query->whereNotBetween(self::INVALID_NAME, 1, 10);
     }
 
     public function testThrowExceptionOnDifferentTypeWhereBetweenValues(): void
     {
         $query = new Select('posts');
-        $this->expectException(TypeError::class);
+        static::expectException(TypeError::class);
         $query->whereBetween('demo', 1, (new \DateTime()));
     }
 
     public function testThrowExceptionOnDifferentTypeWhereNotBetweenValues(): void
     {
         $query = new Select('posts');
-        $this->expectException(TypeError::class);
+        static::expectException(TypeError::class);
         $query->whereNotBetween('demo', 1, (new \DateTime()));
     }
 
     public function testThrowExceptionOnStringValueTypeWhereBetween(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidArgumentException::class);
+        static::expectException(InvalidArgumentException::class);
         $query->whereBetween('demo', 'a', 'd');
     }
 
     public function testThrowExceptionOnStringValueTypeWhereNotBetween(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidArgumentException::class);
+        static::expectException(InvalidArgumentException::class);
         $query->whereNotBetween('demo', 'a', 'd');
     }
 
     public function testThrowExceptionOnBoolValueTypeWhereBetween(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidArgumentException::class);
+        static::expectException(InvalidArgumentException::class);
         $query->whereBetween('demo', true, false);
     }
 
     public function testThrowExceptionOnBoolValueTypeWhereNotBetween(): void
     {
         $query = new Select('posts');
-        $this->expectException(InvalidArgumentException::class);
+        static::expectException(InvalidArgumentException::class);
         $query->whereNotBetween('demo', true, false);
     }
 }

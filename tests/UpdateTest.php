@@ -43,7 +43,7 @@ final class UpdateTest extends TestCase
         $query = (new Update('posts'))
             ->where('id', SqlOperators::EQUAL, 1, 'id')
         ;
-        $this->expectException(RuntimeException::class);
+        static::expectException(RuntimeException::class);
         $query->getQuery();
     }
 
@@ -51,7 +51,7 @@ final class UpdateTest extends TestCase
     {
         $query = (new Update('test'));
         $query->bindField('field1', 'field1');
-        $this->expectException(DangerousSqlQueryWarning::class);
+        static::expectException(DangerousSqlQueryWarning::class);
         $query->getQuery();
     }
 }
