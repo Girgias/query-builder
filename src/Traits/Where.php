@@ -79,6 +79,34 @@ trait Where
         return $this;
     }
 
+    final public function whereIsNull(string $column): self
+    {
+        $this->where[] = $this->buildIsNullClause($column, '');
+
+        return $this;
+    }
+
+    final public function whereIsNotNull(string $column): self
+    {
+        $this->where[] = $this->buildIsNullClause($column, 'NOT ');
+
+        return $this;
+    }
+
+    final public function whereOrIsNull(string $column): self
+    {
+        $this->where[] = $this->buildOrIsNullClause($column, '');
+
+        return $this;
+    }
+
+    final public function whereOrIsNotNull(string $column): self
+    {
+        $this->where[] = $this->buildOrIsNullClause($column, 'NOT ');
+
+        return $this;
+    }
+
     /**
      * Add a WHERE LIKE clause to the Query.
      *
@@ -156,6 +184,24 @@ trait Where
     abstract protected function addStatementParameter(?string $parameter, $value): string;
 
     abstract protected function isValidSqlName(string $name): bool;
+
+    final private function buildIsNullClause(string $column, string $type = ''): string
+    {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('WHERE', $column);
+        }
+
+        return $column.' IS '.$type.'NULL';
+    }
+
+    final private function buildOrIsNullClause(string $column, string $type = ''): string
+    {
+        if (\is_null($this->where)) {
+            throw new RuntimeException('Need to define at least another WHERE clause before utilizing whereOr method');
+        }
+
+        return '('.\array_pop($this->where).' OR '.$this->buildIsNullClause($column, $type).')';
+    }
 
     final private function buildLikeClause(
         string $column,

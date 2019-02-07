@@ -90,6 +90,62 @@ final class WhereClauseTest extends TestCase
         );
     }
 
+    public function testWhereIsNull(): void
+    {
+        $query = (new Select('posts'))
+            ->whereIsNull('published')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM posts WHERE published IS NULL', $query);
+    }
+
+    public function testWhereIsNotNull(): void
+    {
+        $query = (new Select('posts'))
+            ->whereIsNotNull('published')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM posts WHERE published IS NOT NULL', $query);
+    }
+
+    public function testThrowExceptionOnInvalidWhereIsNullColumn(): void
+    {
+        $query = (new Select('test'));
+        $this->expectException(InvalidSqlColumnNameException::class);
+        $query->whereIsNull(self::INVALID_NAME);
+    }
+
+    public function testWhereOrIsNull(): void
+    {
+        $query = (new Select('demo'))
+            ->where('random', SqlOperators::EQUAL, 'Alice', 'random')
+            ->whereOrIsNull('random')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM demo WHERE (random = :random OR random IS NULL)', $query);
+    }
+
+    public function testWhereOrIsNotNull(): void
+    {
+        $query = (new Select('demo'))
+            ->where('random', SqlOperators::EQUAL, 'Alice', 'random')
+            ->whereOrIsNotNull('random')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM demo WHERE (random = :random OR random IS NOT NULL)', $query);
+    }
+
+    public function testThrowExceptionWhenWhereOrNullCalledBeforeAnotherWhereClause(): void
+    {
+        $query = (new Select('test'));
+        $this->expectException(RuntimeException::class);
+        $query->whereOrIsNull('test');
+    }
+
     public function testQueryWhereNotLikeWithEscapeChar(): void
     {
         $query = (new Select('posts'))
