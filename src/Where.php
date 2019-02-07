@@ -14,6 +14,9 @@ use TypeError;
 
 abstract class Where extends Query
 {
+    private const TYPE_NORMAL = '';
+    private const TYPE_NOT = 'NOT ';
+
     /**
      * @var ?array<int, string>
      */
@@ -80,28 +83,28 @@ abstract class Where extends Query
 
     final public function whereIsNull(string $column): self
     {
-        $this->where[] = $this->buildIsNullClause($column, '');
+        $this->where[] = $this->buildIsNullClause($column, self::TYPE_NORMAL);
 
         return $this;
     }
 
     final public function whereIsNotNull(string $column): self
     {
-        $this->where[] = $this->buildIsNullClause($column, 'NOT ');
+        $this->where[] = $this->buildIsNullClause($column, self::TYPE_NOT);
 
         return $this;
     }
 
     final public function whereOrIsNull(string $column): self
     {
-        $this->where[] = $this->buildOrIsNullClause($column, '');
+        $this->where[] = $this->buildOrIsNullClause($column, self::TYPE_NORMAL);
 
         return $this;
     }
 
     final public function whereOrIsNotNull(string $column): self
     {
-        $this->where[] = $this->buildOrIsNullClause($column, 'NOT ');
+        $this->where[] = $this->buildOrIsNullClause($column, self::TYPE_NOT);
 
         return $this;
     }
@@ -122,7 +125,7 @@ abstract class Where extends Query
         ?string $escapeChar = null,
         ?string $namedParameter = null
     ): self {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, '');
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, self::TYPE_NORMAL);
 
         return $this;
     }
@@ -143,7 +146,7 @@ abstract class Where extends Query
         ?string $escapeChar = null,
         ?string $namedParameter = null
     ): self {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, 'NOT ');
+        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, self::TYPE_NOT);
 
         return $this;
     }
@@ -159,7 +162,7 @@ abstract class Where extends Query
      */
     final public function whereBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenClause($column, $start, $end, '');
+        $this->where[] = $this->buildBetweenClause($column, $start, $end, self::TYPE_NORMAL);
 
         return $this;
     }
@@ -175,7 +178,7 @@ abstract class Where extends Query
      */
     final public function whereNotBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenClause($column, $start, $end, 'NOT ');
+        $this->where[] = $this->buildBetweenClause($column, $start, $end, self::TYPE_NOT);
 
         return $this;
     }
@@ -185,7 +188,7 @@ abstract class Where extends Query
         return $this->where;
     }
 
-    final private function buildIsNullClause(string $column, string $type = ''): string
+    final private function buildIsNullClause(string $column, string $type = self::TYPE_NORMAL): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
@@ -194,7 +197,7 @@ abstract class Where extends Query
         return $column.' IS '.$type.'NULL';
     }
 
-    final private function buildOrIsNullClause(string $column, string $type = ''): string
+    final private function buildOrIsNullClause(string $column, string $type = self::TYPE_NORMAL): string
     {
         if (\is_null($this->where)) {
             throw new RuntimeException('Need to define at least another WHERE clause before utilizing whereOr method');
@@ -244,7 +247,7 @@ abstract class Where extends Query
      *
      * @return string
      */
-    final private function buildBetweenClause(string $column, $start, $end, string $type = ''): string
+    final private function buildBetweenClause(string $column, $start, $end, string $type = self::TYPE_NORMAL): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'BETWEEN', $column);
