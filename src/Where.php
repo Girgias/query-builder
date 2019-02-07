@@ -188,7 +188,7 @@ abstract class Where extends Query
         return $this->where;
     }
 
-    final private function buildIsNullClause(string $column, string $type = self::TYPE_NORMAL): string
+    final private function buildIsNullClause(string $column, string $type): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
@@ -197,7 +197,7 @@ abstract class Where extends Query
         return $column.' IS '.$type.'NULL';
     }
 
-    final private function buildOrIsNullClause(string $column, string $type = self::TYPE_NORMAL): string
+    final private function buildOrIsNullClause(string $column, string $type): string
     {
         if (\is_null($this->where)) {
             throw new RuntimeException('Need to define at least another WHERE clause before utilizing whereOr method');
@@ -209,9 +209,9 @@ abstract class Where extends Query
     final private function buildLikeClause(
         string $column,
         string $pattern,
-        ?string $escapeChar = null,
-        ?string $namedParameter = null,
-        string $type = ''
+        ?string $escapeChar,
+        ?string $namedParameter,
+        string $type
     ): string {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'LIKE', $column);
@@ -247,7 +247,7 @@ abstract class Where extends Query
      *
      * @return string
      */
-    final private function buildBetweenClause(string $column, $start, $end, string $type = self::TYPE_NORMAL): string
+    final private function buildBetweenClause(string $column, $start, $end, string $type): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'BETWEEN', $column);
