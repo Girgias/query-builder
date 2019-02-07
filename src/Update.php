@@ -6,12 +6,11 @@ namespace Girgias\QueryBuilder;
 
 use Girgias\QueryBuilder\Exceptions\DangerousSqlQueryWarning;
 use Girgias\QueryBuilder\Traits\BindField;
-use Girgias\QueryBuilder\Traits\Where;
 use RuntimeException;
 
-final class Update extends Query
+final class Update extends Where
 {
-    use Where, BindField;
+    use BindField;
 
     /**
      * Return built Query.
@@ -23,7 +22,8 @@ final class Update extends Query
         if (\is_null($this->fields)) {
             throw new RuntimeException('No fields to update defined');
         }
-        if (\is_null($this->where)) {
+        $whereClause = $this->getWhereClause();
+        if (\is_null($whereClause)) {
             throw new DangerousSqlQueryWarning('No WHERE clause in UPDATE query');
         }
 
@@ -39,7 +39,7 @@ final class Update extends Query
         $parts[] = \implode(', ', $columns);
 
         $parts[] = 'WHERE';
-        $parts[] = \implode(' AND ', $this->where);
+        $parts[] = \implode(' AND ', $whereClause);
 
         return \implode(' ', $parts);
     }

@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Girgias\QueryBuilder\Traits;
+namespace Girgias\QueryBuilder;
 
 use DateTimeInterface;
 use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlOperatorException;
-use Girgias\QueryBuilder\Query;
 use InvalidArgumentException;
 use RuntimeException;
 use TypeError;
 
-trait Where
+abstract class Where extends Query
 {
     /**
      * @var ?array<int, string>
@@ -181,9 +180,10 @@ trait Where
         return $this;
     }
 
-    abstract protected function addStatementParameter(?string $parameter, $value): string;
-
-    abstract protected function isValidSqlName(string $name): bool;
+    final protected function getWhereClause(): ?array
+    {
+        return $this->where;
+    }
 
     final private function buildIsNullClause(string $column, string $type = ''): string
     {
