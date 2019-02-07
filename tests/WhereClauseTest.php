@@ -8,6 +8,7 @@ use Girgias\QueryBuilder\Enums\SqlOperators;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlOperatorException;
 use Girgias\QueryBuilder\Select;
+use Girgias\QueryBuilder\Where;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -22,25 +23,25 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionOnInvalidWhereColumn(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
+        $stub->where(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOperator(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(UnexpectedSqlOperatorException::class);
-        $query->where('test', 'not an operator', 'random', 'random');
+        $stub->where('test', 'not an operator', 'random', 'random');
     }
 
     public function testThrowExceptionWithHelpMessageWhenNonObviousNotEqualToOperatorUsed(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(UnexpectedSqlOperatorException::class);
         // This tests if the message is contained in the Exception message not an exact comparison.
         static::expectExceptionMessage('Did you mean `<>` (ANSI \'not equal to\' operator) ?');
-        $query->where('test', '!=', 'random', 'random');
+        $stub->where('test', '!=', 'random', 'random');
     }
 
     public function testQueryWhereOr(): void
@@ -56,23 +57,23 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionWhenWhereOrCalledBeforeAnotherWhereClause(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(RuntimeException::class);
-        $query->whereOr('test', SqlOperators::EQUAL, 'random', 'random');
+        $stub->whereOr('test', SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnInvalidWhereOrColumn(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
+        $stub->whereOr(self::INVALID_NAME, SqlOperators::EQUAL, 'random', 'random');
     }
 
     public function testThrowExceptionOnUndefinedWhereOrOperator(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(UnexpectedSqlOperatorException::class);
-        $query->whereOr('test', 'not an operator', 'random', 'random');
+        $stub->whereOr('test', 'not an operator', 'random', 'random');
     }
 
     public function testQueryWhereAndOr(): void
@@ -90,6 +91,9 @@ final class WhereClauseTest extends TestCase
         );
     }
 
+    /**
+     * WHERE NULL TESTS.
+     */
     public function testWhereIsNull(): void
     {
         $query = (new Select('posts'))
@@ -112,9 +116,9 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionOnInvalidWhereIsNullColumn(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereIsNull(self::INVALID_NAME);
+        $stub->whereIsNull(self::INVALID_NAME);
     }
 
     public function testWhereOrIsNull(): void
@@ -141,11 +145,14 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionWhenWhereOrNullCalledBeforeAnotherWhereClause(): void
     {
-        $query = (new Select('test'));
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(RuntimeException::class);
-        $query->whereOrIsNull('test');
+        $stub->whereOrIsNull('test');
     }
 
+    /**
+     * WHERE LIKE CLAUSE TESTS.
+     */
     public function testQueryWhereNotLikeWithEscapeChar(): void
     {
         $query = (new Select('posts'))
@@ -158,25 +165,28 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionOnInvalidWhereLikeColumn(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereLike(self::INVALID_NAME, 'a');
+        $stub->whereLike(self::INVALID_NAME, 'a');
     }
 
     public function testThrowExceptionOnInvalidWhereNotLikeColumn(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereNotLike(self::INVALID_NAME, 'a');
+        $stub->whereNotLike(self::INVALID_NAME, 'a');
     }
 
     public function testThrowExceptionOnInvalidWhereLikeEscapeChar(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidArgumentException::class);
-        $query->whereNotLike('tags', '%UTF#_8', '##');
+        $stub->whereNotLike('tags', '%UTF#_8', '##');
     }
 
+    /**
+     * WHERE BETWEEN CLAUSE TESTS.
+     */
     public function testQueryWhereBetweenIntegers(): void
     {
         $query = (new Select('posts'))
@@ -229,57 +239,57 @@ final class WhereClauseTest extends TestCase
 
     public function testThrowExceptionOnInvalidWhereBetweenColumn(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereBetween(self::INVALID_NAME, 1, 10);
+        $stub->whereBetween(self::INVALID_NAME, 1, 10);
     }
 
     public function testThrowExceptionOnInvalidWhereNotBetweenColumn(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidSqlColumnNameException::class);
-        $query->whereNotBetween(self::INVALID_NAME, 1, 10);
+        $stub->whereNotBetween(self::INVALID_NAME, 1, 10);
     }
 
     public function testThrowExceptionOnDifferentTypeWhereBetweenValues(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(TypeError::class);
-        $query->whereBetween('demo', 1, (new \DateTime()));
+        $stub->whereBetween('demo', 1, (new \DateTime()));
     }
 
     public function testThrowExceptionOnDifferentTypeWhereNotBetweenValues(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(TypeError::class);
-        $query->whereNotBetween('demo', 1, (new \DateTime()));
+        $stub->whereNotBetween('demo', 1, (new \DateTime()));
     }
 
     public function testThrowExceptionOnStringValueTypeWhereBetween(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidArgumentException::class);
-        $query->whereBetween('demo', 'a', 'd');
+        $stub->whereBetween('demo', 'a', 'd');
     }
 
     public function testThrowExceptionOnStringValueTypeWhereNotBetween(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidArgumentException::class);
-        $query->whereNotBetween('demo', 'a', 'd');
+        $stub->whereNotBetween('demo', 'a', 'd');
     }
 
     public function testThrowExceptionOnBoolValueTypeWhereBetween(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidArgumentException::class);
-        $query->whereBetween('demo', true, false);
+        $stub->whereBetween('demo', true, false);
     }
 
     public function testThrowExceptionOnBoolValueTypeWhereNotBetween(): void
     {
-        $query = new Select('posts');
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
         static::expectException(InvalidArgumentException::class);
-        $query->whereNotBetween('demo', true, false);
+        $stub->whereNotBetween('demo', true, false);
     }
 }
