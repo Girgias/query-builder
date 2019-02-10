@@ -83,28 +83,28 @@ abstract class Where extends Query
 
     final public function whereIsNull(string $column): self
     {
-        $this->where[] = $this->buildIsNullClause($column, self::TYPE_NORMAL);
+        $this->where[] = $this->buildIsNullClause(self::TYPE_NORMAL, $column);
 
         return $this;
     }
 
     final public function whereIsNotNull(string $column): self
     {
-        $this->where[] = $this->buildIsNullClause($column, self::TYPE_NOT);
+        $this->where[] = $this->buildIsNullClause(self::TYPE_NOT, $column);
 
         return $this;
     }
 
     final public function whereOrIsNull(string $column): self
     {
-        $this->where[] = $this->buildOrIsNullClause($column, self::TYPE_NORMAL);
+        $this->where[] = $this->buildOrIsNullClause(self::TYPE_NORMAL, $column);
 
         return $this;
     }
 
     final public function whereOrIsNotNull(string $column): self
     {
-        $this->where[] = $this->buildOrIsNullClause($column, self::TYPE_NOT);
+        $this->where[] = $this->buildOrIsNullClause(self::TYPE_NOT, $column);
 
         return $this;
     }
@@ -125,7 +125,7 @@ abstract class Where extends Query
         ?string $escapeChar = null,
         ?string $namedParameter = null
     ): self {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, self::TYPE_NORMAL);
+        $this->where[] = $this->buildLikeClause(self::TYPE_NORMAL, $column, $pattern, $escapeChar, $namedParameter);
 
         return $this;
     }
@@ -146,7 +146,7 @@ abstract class Where extends Query
         ?string $escapeChar = null,
         ?string $namedParameter = null
     ): self {
-        $this->where[] = $this->buildLikeClause($column, $pattern, $escapeChar, $namedParameter, self::TYPE_NOT);
+        $this->where[] = $this->buildLikeClause(self::TYPE_NOT, $column, $pattern, $escapeChar, $namedParameter);
 
         return $this;
     }
@@ -162,7 +162,7 @@ abstract class Where extends Query
      */
     final public function whereBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenClause($column, $start, $end, self::TYPE_NORMAL);
+        $this->where[] = $this->buildBetweenClause(self::TYPE_NORMAL, $column, $start, $end);
 
         return $this;
     }
@@ -178,7 +178,7 @@ abstract class Where extends Query
      */
     final public function whereNotBetween(string $column, $start, $end): self
     {
-        $this->where[] = $this->buildBetweenClause($column, $start, $end, self::TYPE_NOT);
+        $this->where[] = $this->buildBetweenClause(self::TYPE_NOT, $column, $start, $end);
 
         return $this;
     }
@@ -214,7 +214,7 @@ abstract class Where extends Query
         return $this->where;
     }
 
-    final private function buildIsNullClause(string $column, string $type): string
+    final private function buildIsNullClause(string $type, string $column): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE', $column);
@@ -223,21 +223,21 @@ abstract class Where extends Query
         return $column.' IS '.$type.'NULL';
     }
 
-    final private function buildOrIsNullClause(string $column, string $type): string
+    final private function buildOrIsNullClause(string $type, string $column): string
     {
         if (\is_null($this->where)) {
             throw new RuntimeException('Need to define at least another WHERE clause before utilizing whereOr method');
         }
 
-        return '('.\array_pop($this->where).' OR '.$this->buildIsNullClause($column, $type).')';
+        return '('.\array_pop($this->where).' OR '.$this->buildIsNullClause($type, $column).')';
     }
 
     final private function buildLikeClause(
+        string $type,
         string $column,
         string $pattern,
         ?string $escapeChar,
-        ?string $namedParameter,
-        string $type
+        ?string $namedParameter
     ): string {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'LIKE', $column);
@@ -266,14 +266,14 @@ abstract class Where extends Query
     }
 
     /**
+     * @param string $type
      * @param string $column
      * @param mixed  $start
      * @param mixed  $end
-     * @param string $type
      *
      * @return string
      */
-    final private function buildBetweenClause(string $column, $start, $end, string $type): string
+    final private function buildBetweenClause(string $type, string $column, $start, $end): string
     {
         if (!$this->isValidSqlName($column)) {
             throw new InvalidSqlColumnNameException('WHERE '.$type.'BETWEEN', $column);
