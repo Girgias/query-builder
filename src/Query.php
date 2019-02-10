@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Girgias\QueryBuilder;
 
+use DateTimeInterface;
 use Girgias\QueryBuilder\Enums\SqlReservedWords;
 use Girgias\QueryBuilder\Exceptions\DuplicateSqlParameter;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlParameterException;
@@ -67,6 +68,10 @@ abstract class Query
      */
     final protected function addStatementParameter(?string $parameter, $value): string
     {
+        if ($value instanceof DateTimeInterface) {
+            $value = $value->format(self::SQL_DATE_FORMAT);
+        }
+
         if (!\is_scalar($value)) {
             throw new \InvalidArgumentException('Statement parameter value must be a scalar.');
         }

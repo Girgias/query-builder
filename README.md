@@ -81,7 +81,7 @@ $query = (new \Girgias\QueryBuilder\Update('posts'))
     ->where('id', '=', 1, 'id')
     ->bindField('title', 'This is a title', 'title')
     ->bindField('content', 'Hello World', 'content')
-    ->bindField('date_last_edited', '2019-02-06', 'nowDate')
+    ->bindField('date_last_edited', (new \DateTimeImmutable()), 'nowDate')
     ->getQuery();
 ```
 

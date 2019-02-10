@@ -87,6 +87,20 @@ final class QueryTest extends TestCase
         static::assertCount(2, $property->getValue($stub));
     }
 
+    public function testAddParametersWithDateTimeInterfaceValue(): void
+    {
+        $stub = static::getMockForAbstractClass(Query::class, [], '', false);
+
+        $method = new ReflectionMethod($stub, 'addStatementParameter');
+        $method->setAccessible(true);
+        $method->invoke($stub, 'named', (new \DateTimeImmutable('2019-02-10')));
+
+        $property = $method->getDeclaringClass()->getProperty('parameters');
+        $property->setAccessible(true);
+
+        static::assertSame(['named' => '2019-02-10 00:00:00'], $property->getValue($stub));
+    }
+
     public function testAddParameterExceptionOnInvalidValueType(): void
     {
         $stub = static::getMockForAbstractClass(Query::class, [], '', false);
