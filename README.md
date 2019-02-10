@@ -105,11 +105,11 @@ Will output:
 SELECT co.user, co.content, p.title FROM comments AS co INNER JOIN posts AS p ON comments.post_id = posts.id
 ```
 
-## ToDos
+## Future scope
 
-There are some features that are still waiting to be implementing
+Possible features that will be added to this library
 
-* WHERE IN and WHERE NOT IN clauses
+* WHERE subqueries 
 
 ## Contributing
 
