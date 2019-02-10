@@ -183,6 +183,32 @@ abstract class Where extends Query
         return $this;
     }
 
+    /**
+     * @param string $column
+     * @param mixed  ...$values
+     *
+     * @return self
+     */
+    final public function whereIn(string $column, ...$values): self
+    {
+        $this->where[] = $this->buildInClause(self::TYPE_NORMAL, $column, $values);
+
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param mixed  ...$values
+     *
+     * @return self
+     */
+    final public function whereNotIn(string $column, ...$values): self
+    {
+        $this->where[] = $this->buildInClause(self::TYPE_NOT, $column, $values);
+
+        return $this;
+    }
+
     final protected function getWhereClause(): ?array
     {
         return $this->where;
@@ -272,5 +298,36 @@ abstract class Where extends Query
         }
 
         return $column.' '.$type.'BETWEEN '.(string) $start.' AND '.(string) $end;
+    }
+
+    /**
+     * @param string            $type
+     * @param string            $column
+     * @param array<int, mixed> $values
+     *
+     * @return string
+     */
+    final private function buildInClause(string $type, string $column, array $values): string
+    {
+        if (!$this->isValidSqlName($column)) {
+            throw new InvalidSqlColumnNameException('WHERE '.$type.'IN', $column);
+        }
+
+        if (empty($values)) {
+            throw new \ArgumentCountError('At least one value needs to be passed to WHERE '.$type.'IN clause.');
+        }
+
+        $parameters = [];
+
+        /**
+         * Suppressing psalm error as mixed values are expected.
+         *
+         * @psalm-suppress MixedAssignment
+         */
+        foreach ($values as $value) {
+            $parameters[] = ':'.$this->addStatementParameter(null, $value);
+        }
+
+        return $column.' '.$type.'IN ('.\implode(', ', $parameters).')';
     }
 }

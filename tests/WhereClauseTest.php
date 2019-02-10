@@ -292,4 +292,47 @@ final class WhereClauseTest extends TestCase
         static::expectException(InvalidArgumentException::class);
         $stub->whereNotBetween('demo', true, false);
     }
+
+    /**
+     * WHERE IN CLAUSE TESTS.
+     */
+    public function testWhereIn(): void
+    {
+        $seed = 45632;
+        \mt_srand($seed);
+
+        $query = (new Select('demo'))
+            ->whereIn('test', 5, 10, 'hello')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM demo WHERE test IN (:piaxATPOGl, :KFmKzqGrEN, :TdNWVtBGr)', $query);
+    }
+
+    public function testWhereNotIn(): void
+    {
+        $seed = 45632;
+        \mt_srand($seed);
+
+        $query = (new Select('demo'))
+            ->whereNotIn('test', 5, 10, 'hello')
+            ->getQuery()
+        ;
+
+        static::assertSame('SELECT * FROM demo WHERE test NOT IN (:piaxATPOGl, :KFmKzqGrEN, :TdNWVtBGr)', $query);
+    }
+
+    public function testThrowExceptionOnInvalidWhereInColumn(): void
+    {
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
+        static::expectException(InvalidSqlColumnNameException::class);
+        $stub->whereIn(self::INVALID_NAME, 1);
+    }
+
+    public function testThrowExceptionWithNoValuesForWhereInClause(): void
+    {
+        $stub = static::getMockForAbstractClass(Where::class, [], '', false);
+        static::expectException(\ArgumentCountError::class);
+        $stub->whereIn('demo');
+    }
 }
