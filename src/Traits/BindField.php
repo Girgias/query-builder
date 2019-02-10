@@ -11,26 +11,31 @@ trait BindField
     /**
      * @var ?array<string, string>
      */
-    private $parameters;
+    private $fields;
 
     /**
      * Binds a field to a parameter.
      *
      * @param string $field
-     * @param string $parameter
+     * @param mixed  $value
+     * @param string $namedParameter
      *
      * @return self
      */
-    final public function bindField(string $field, string $parameter): self
+    final public function bindField(string $field, $value, ?string $namedParameter = null): self
     {
         if (!$this->isValidSqlName($field)) {
             throw new InvalidSqlFieldNameException($field);
         }
 
-        $this->parameters[$field] = $parameter;
+        $namedParameter = $this->addStatementParameter($namedParameter, $value);
+
+        $this->fields[$field] = $namedParameter;
 
         return $this;
     }
+
+    abstract protected function addStatementParameter(?string $parameter, $value): string;
 
     abstract protected function isValidSqlName(string $name): bool;
 }

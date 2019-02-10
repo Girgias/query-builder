@@ -11,15 +11,12 @@ use Girgias\QueryBuilder\Exceptions\InvalidSqlAliasNameException;
 use Girgias\QueryBuilder\Exceptions\InvalidSqlColumnNameException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlFunctionException;
 use Girgias\QueryBuilder\Exceptions\UnexpectedSqlOperatorException;
-use Girgias\QueryBuilder\Traits\Where;
 use InvalidArgumentException;
 use OutOfRangeException;
 use RuntimeException;
 
-class Select extends Query
+class Select extends Where
 {
-    use Where;
-
     public const SORT_ASC = 'ASC';
     public const SORT_DESC = 'DESC';
 
@@ -394,9 +391,10 @@ class Select extends Query
         }
         $clauses = [];
 
-        if (!\is_null($this->where)) {
+        $whereClause = $this->getWhereClause();
+        if (!\is_null($whereClause)) {
             $clauses[] = 'WHERE';
-            $clauses[] = \implode(' AND ', $this->where);
+            $clauses[] = \implode(' AND ', $whereClause);
         }
 
         if (!\is_null($this->group)) {

@@ -192,21 +192,21 @@ final class SelectTest extends TestCase
             ->tableAlias('p')
             ->distinct('title')
             ->limit(15, 5)
-            ->where('published', SqlOperators::EQUAL, 'status')
+            ->where('published', SqlOperators::EQUAL, true, 'status')
             ->having(
                 'score',
                 AggregateFunctions::AVERAGE,
                 SqlOperators::MORE_THAN,
                 20
             )
-            ->whereLike('author', 'John%')
+            ->whereLike('author', 'John%', null, 'pattern')
             ->order('date_creation')
             ->group('id')
             ->getQuery()
         ;
 
         static::assertSame(
-            "SELECT DISTINCT title FROM posts AS p WHERE published = :status AND author LIKE 'John%' ".
+            'SELECT DISTINCT title FROM posts AS p WHERE published = :status AND author LIKE :pattern '.
             'GROUP BY id HAVING AVG(score) > 20 ORDER BY date_creation ASC LIMIT 15 OFFSET 5',
             $query
         );
@@ -216,7 +216,7 @@ final class SelectTest extends TestCase
     public function testThrowExceptionOnSelectLimitWithoutOrderClause(): void
     {
         $query = (new Select('test'))->limit(5);
-        $this->expectException(DangerousSqlQueryWarning::class);
+        static::expectException(DangerousSqlQueryWarning::class);
         $query->getQuery();
     }
 }

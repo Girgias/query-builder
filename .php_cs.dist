@@ -18,19 +18,29 @@ return PhpCsFixer\Config::create()
         // Force strict types declaration in all files.
         // Requires PHP >= 7.0.
         'declare_strict_types' => true,
+        // Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.
+        'dir_constant' => true,
         // Replace deprecated `ereg` regular expression functions with `preg`.
         'ereg_to_preg' => true,
         // Error control operator should be added to deprecation notices and/or removed from other cases.
         'error_suppression' => true,
         // Internal classes should be `final`.
         'final_internal_class' => true,
+        // Order the flags in `fopen` calls, `b` and `t` must be last.
+        'fopen_flag_order' => true,
+        // The flags in `fopen` calls must omit `t`, and `b` must be omitted or included consistently.
+        'fopen_flags' => true,
         // Replace core functions calls returning constants with the constants.
         'function_to_constant' => true,
+        // Single line comments should use double slashes `//` and not hash `#`.
+        'hash_to_slash_comment' => true,
         // Heredoc/nowdoc content must be properly indented.
         // Requires PHP >= 7.3.
         'heredoc_indentation' => true,
         // Function `implode` must be called with 2 arguments in the documented order.
         'implode_call' => true,
+        // Ensure there is no code on the same line as the PHP open tag.
+        'linebreak_after_opening_tag' => true,
         // List (`array` destructuring) assignment should be declared using the configured syntax.
         // Requires PHP >= 7.1.
         'list_syntax' => true,
@@ -61,6 +71,8 @@ return PhpCsFixer\Config::create()
         'php_unit_mock' => true,
         // PHPUnit classes MUST be used in namespaced version, eg `\PHPUnit\Framework\TestCase` instead of `\PHPUnit_Framework_TestCase`.
         'php_unit_namespaced' => true,
+        // Usages of `@expectedException*` annotations MUST be replaced by `->setExpectedException*` methods.
+        'php_unit_no_expectation_annotation' => true,
         // Changes the visibility of the `setUp()` and `tearDown()` functions of PHPUnit to `protected`, to match the PHPUnit TestCase.
         'php_unit_set_up_tear_down_visibility' => true,
         // PHPUnit methods like `assertSame` should be used instead of `assertEquals`.
@@ -97,6 +109,8 @@ return PhpCsFixer\Config::create()
         // Add void return type to functions with missing or empty return statements, but priority is given to `@return` annotations.
         // Requires PHP >= 7.1.
         'void_return' => true,
+        // Write conditions in Yoda style (`true`), non-Yoda style (`false`) or ignore those conditions (`null`) based on configuration.
+        'yoda_style' => false,
     ])
     ->setFinder(PhpCsFixer\Finder::create()
         ->exclude('vendor')

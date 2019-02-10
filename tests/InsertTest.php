@@ -16,7 +16,7 @@ final class InsertTest extends TestCase
     public function testInsertQueryWithOneParameter(): void
     {
         $query = (new Insert('posts'))
-            ->bindField('username', 'username')
+            ->bindField('username', 'Alice', 'username')
             ->getQuery()
         ;
 
@@ -26,8 +26,8 @@ final class InsertTest extends TestCase
     public function testInsertQueryWithTwoParameter(): void
     {
         $query = (new Insert('posts'))
-            ->bindField('username', 'username')
-            ->bindField('age', 'age')
+            ->bindField('username', 'Alice', 'username')
+            ->bindField('age', 20, 'age')
             ->getQuery()
         ;
 
@@ -37,7 +37,7 @@ final class InsertTest extends TestCase
     public function testThrowExceptionOnInsertQueryWithoutParameters(): void
     {
         $query = (new Insert('posts'));
-        $this->expectException(RuntimeException::class);
+        static::expectException(RuntimeException::class);
         $query->getQuery();
     }
 }

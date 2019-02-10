@@ -15,21 +15,28 @@ composer require girgias/query-builder
 ## Features
 
 This Query Builder can build a variety of SQL queries which are database agnostic
-because it uses the ANSI standardized syntax.
+as it uses the ANSI standardized syntax.
 
-Every sort of query has its own class which extends from the base Query class,
+Every sort of query has its own class which extends from the base ``Query`` class,
 They all have the same constructor signature which requires the table name 
 on which to execute the query.
 
-To do a SELECT query with table join use the ``SelectJoin`` class.
+To build a SELECT query with table join use the ``SelectJoin`` class.
 An example can be seen below on how to use this class.
 
+It is possible to directly provide scalar values to WHERE clauses and while binding a field.
+It is also possible to specify the named parameter against which the value will be bounded.
+In case no named parameter has been provided a random one will be generated.
+
+To retrieve the named parameters with their associated values use the ``getParameters``
+method which will return an associative array ``parameter => value``.
+
 ### Examples
-A basic select query:
+A basic ``SELECT`` query:
 ```php
-$query = (new \Girgias\QueryBuilder\Select("demo"))
+$query = (new \Girgias\QueryBuilder\Select('demo'))
     ->limit(10, 20)
-    ->order("published_date")
+    ->order('published_date')
     ->getQuery();
 ```
 Will output:
@@ -37,15 +44,15 @@ Will output:
 SELECT * FROM demo ORDER BY published_date ASC LIMIT 10 OFFSET 20
 ```
 
-A more complex select query:
+A more complex ``SELECT`` query:
 ```php
-$start = new \DateTime("01/01/2016");
-$end   = new \DateTime("01/01/2017");
-$query = (new \Girgias\QueryBuilder\Select("demo"))
-    ->select("title", "slug")
-    ->selectAs("name_author_post", "author")
-    ->whereBetween("date_published", $start, $end)
-    ->order("date_published", "DESC")
+$start = new \DateTime('01/01/2016');
+$end = new \DateTime('01/01/2017');
+$query = (new \Girgias\QueryBuilder\Select('demo'))
+    ->select('title', 'slug')
+    ->selectAs('name_author_post', 'author')
+    ->whereBetween('date_published', $start, $end)
+    ->order('date_published', 'DESC')
     ->limit(25)
     ->getQuery();
 ```
@@ -57,9 +64,9 @@ SELECT title, slug, name_author_post AS author FROM demo WHERE date_published BE
 
 An example with the ``whereOr`` method:
 ```php
-$query = (new \Girgias\QueryBuilder\Select("demo"))
-    ->where("author", "=", "author")
-    ->whereOr("editor", "=", "editor")
+$query = (new \Girgias\QueryBuilder\Select('demo'))
+    ->where('author', '=', 'Alice', 'author')
+    ->whereOr('editor', '=', 'Alice', 'editor')
     ->getQuery();
 ```
 
@@ -68,21 +75,22 @@ Will output:
 SELECT * FROM demo WHERE (author = :author OR editor = :editor)
 ```
 
-Update example:
+``UPDATE`` query example:
 ```php
-$query = (new \Girgias\QueryBuilder\Update("posts"))
-    ->where("id", SqlOperators::EQUAL, "id")
-    ->bindField("title", "title")
-    ->bindField("content", "content")
-    ->bindField("date_last_edited", "now_date")
+$query = (new \Girgias\QueryBuilder\Update('posts'))
+    ->where('id', '=', 1, 'id')
+    ->bindField('title', 'This is a title', 'title')
+    ->bindField('content', 'Hello World', 'content')
+    ->bindField('date_last_edited', (new \DateTimeImmutable()), 'nowDate')
     ->getQuery();
 ```
+
 Will output:
 ```sql
 UPDATE posts SET title = :title, content = :content, date_last_edited = :now_date WHERE id = :id
 ```
 
-Select INNER join example:
+A ``SELECT`` query with an ``INNER JOIN``:
 ```php
 $query = (new \Girgias\QueryBuilder\SelectJoin('comments', 'posts'))
     ->tableAlias('co')
@@ -91,16 +99,17 @@ $query = (new \Girgias\QueryBuilder\SelectJoin('comments', 'posts'))
     ->innerJoin('post_id', 'id')
     ->getQuery();
 ```
+
 Will output:
 ```sql
 SELECT co.user, co.content, p.title FROM comments AS co INNER JOIN posts AS p ON comments.post_id = posts.id
 ```
 
-## ToDos
+## Future scope
 
-There are some features that are still waiting to be implementing
+Possible features that will be added to this library
 
-* WHERE IN and WHERE NOT IN clauses
+* WHERE subqueries 
 
 ## Contributing
 
@@ -112,19 +121,18 @@ If you found an example where this library returns an invalid SQL query
 please add (or fix) a test case in the relevant Query test case or if it's
 a general error please use the ``tests/QueryTest`` file.
 
-If a RunTime exception should be thrown please add a test in the 
-``tests/QueryThrowExceptionsTest.php`` file if it's for general Exceptions
-or if it is specific to the Select Query please add a test in the
+If a RunTime exception should be thrown please add a test in the relevant test file
+or if it is specific to ``SELECT`` Query please add a test in the
 ``tests/SelectThrowExceptionsTest.php`` file.
 
 If you'd like to contribute, please fork the repository and use a feature
 branch. Pull requests are warmly welcome.
 
 ### Notes
-When contributing you should make sure that Psalm runs without error
+When contributing please assure that Psalm runs without error
 and all unit tests pass.
 Moreover if you add functionality please add corresponding unit tests to cover
-at least 90% of your code and that theses tests make sure of edge cases if they exist.
+at least 90% of your code and that these tests cover any edge cases if they exist.
 
 ## Links
 
